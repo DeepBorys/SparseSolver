@@ -69,8 +69,8 @@ use `--threads N` to choose fewer workers. Four-worker timings and sixteen-worke
 timings are separate measurements.
 
 ```bash
-git clone --depth 1 --single-branch --branch aws-public https://github.com/DeepBorys/Rust_solver.git
-cd Rust_solver
+git clone --depth 1 --single-branch --branch main https://github.com/DeepBorys/SparseSolver.git
+cd SparseSolver
 bash setup.sh
 bash run_quick_benchmark.sh
 ```
@@ -113,7 +113,7 @@ bash run_all_40.sh
 
 The quick test prints timings, peak RAM, flop-log paths and `STATIC_CHECK_PASS`.
 The full sweep covers **8 flops × 5 situations × 4 models = 160 configurations**.
-Its optional [models-v1 archive](https://github.com/DeepBorys/Rust_solver/releases/tag/models-v1)
+Its optional [models-v1 archive](https://github.com/DeepBorys/SparseSolver/releases/tag/models-v1)
 is approximately 1 GiB; private downloads require authentication or a local file.
 The bundled QJ2 examples work without that optional download.
 

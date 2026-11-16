@@ -21,8 +21,8 @@ A 30–40 GiB EBS volume leaves room for Ubuntu, CPU Torch, compilation and cach
 No GPU is needed. Initial installation requires internet access and sudo.
 
 ```bash
-git clone --depth 1 --single-branch --branch aws-public https://github.com/DeepBorys/Rust_solver.git
-cd Rust_solver
+git clone --depth 1 --single-branch --branch main https://github.com/DeepBorys/SparseSolver.git
+cd SparseSolver
 bash setup.sh
 bash run_quick_benchmark.sh
 ```
@@ -89,7 +89,7 @@ QJ2-only tests still work without this optional download.
 
 Browse or upload model files under the repository’s **Releases → models-v1 →
 Assets**, not Deployments:
-https://github.com/DeepBorys/Rust_solver/releases
+https://github.com/DeepBorys/SparseSolver/releases
 
 The models-v1 release contains the archive. For a private release, supply `GH_TOKEN`/`GITHUB_TOKEN` in the environment,
 or download through your authenticated browser and install the file locally:

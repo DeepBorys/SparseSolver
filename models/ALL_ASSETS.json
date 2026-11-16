@@ -4,8 +4,8 @@
   "sha256": "83baa5381bd0d07824bfb05de0bd0e31b1c551d9ac949b8479b512e710838b8c",
   "bytes": 1069369961,
   "release_tag": "models-v1",
-  "repository": "DeepBorys/Rust_solver",
-  "url": "https://github.com/DeepBorys/Rust_solver/releases/download/models-v1/models-v1.tar.gz",
+  "repository": "DeepBorys/SparseSolver",
+  "url": "https://github.com/DeepBorys/SparseSolver/releases/download/models-v1/models-v1.tar.gz",
   "models": 272,
   "flops": 8,
   "families": [
