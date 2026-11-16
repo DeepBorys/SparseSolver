@@ -1,0 +1,14 @@
+{
+  "interface_version": 1,
+  "context": "pot_fraction",
+  "third_input": "current_reaches",
+  "uses_current_reaches": true,
+  "sum_cfvs": false,
+  "basis_count": 6,
+  "target_scale": "basis_cfv_rms",
+  "input_scale": "basis_cfv_rms",
+  "rms_denominator": "supported_hands_times_basis_count",
+  "context_repeat_per_card": 0,
+  "output": "complete_turn_sum",
+  "equity_features": false
+}

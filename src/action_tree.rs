@@ -377,6 +377,39 @@ impl ActionTree {
         self.total_bet_amount_recursive(&self.root.lock(), &self.history, info)
     }
 
+    /// Force check/check on river entries whose actual pot is in the inclusive
+    /// band. Other river betting subtrees and all earlier actions are retained.
+    /// Returns (forced-check river entries, retained betting river entries).
+    /// The decision is made before any river bet; uncommitted stacks are excluded.
+    pub fn force_check_only_rivers_in_pot_band(&mut self, min: i32, max: i32) -> Result<(usize, usize), String> {
+        if min <= 0 || min > max { return Err("Invalid inclusive river pot band".into()); }
+        if !self.history.is_empty() { return Err("River pot-band pruning requires the root".into()); }
+        fn strip(tree: &mut ActionTree) {
+            if tree.is_terminal_node() { return; }
+            for action in tree.available_actions().to_vec() {
+                if action != Action::Check { tree.remove_action(action).unwrap(); continue; }
+                tree.play(action).unwrap(); strip(tree); tree.undo().unwrap();
+            }
+        }
+        fn walk(tree: &mut ActionTree, street: usize, min: i32, max: i32, counts: &mut (usize, usize)) {
+            if tree.is_terminal_node() { return; }
+            let street = street + usize::from(tree.is_chance_node());
+            if street == BoardState::River as usize {
+                let amounts = tree.total_bet_amount();
+                let pot = tree.config.starting_pot + amounts[0] + amounts[1];
+                if (min..=max).contains(&pot) { strip(tree); counts.0 += 1; }
+                else { counts.1 += 1; }
+                return;
+            }
+            for action in tree.available_actions().to_vec() {
+                tree.play(action).unwrap(); walk(tree, street, min, max, counts); tree.undo().unwrap();
+            }
+        }
+        let mut counts = (0, 0);
+        walk(self, self.config.initial_state as usize, min, max, &mut counts);
+        Ok(counts)
+    }
+
     /// Ejects the fields.
     #[inline]
     pub(crate) fn eject(self) -> EjectedActionTree {
@@ -568,7 +601,7 @@ impl ActionTree {
                         let amount = (pot as f64 * ratio).round() as i32;
                         actions.push(Action::Bet(amount));
                     }
-                    BetSize::PrevBetRelative(_) => panic!("Unexpected `PrevBetRelative`"),
+                    BetSize::PrevBetRelative(_) | BetSize::PotRelativeByStreetPot(..) => panic!("Unexpected raise-only size"),
                     BetSize::Additive(adder, _) => actions.push(Action::Bet(adder)),
                     BetSize::Geometric(num_streets, max_ratio) => {
                         let num_streets = match num_streets {
@@ -600,7 +633,7 @@ impl ActionTree {
                         let amount = (pot as f64 * ratio).round() as i32;
                         actions.push(Action::Bet(amount));
                     }
-                    BetSize::PrevBetRelative(_) => panic!("Unexpected `PrevBetRelative`"),
+                    BetSize::PrevBetRelative(_) | BetSize::PotRelativeByStreetPot(..) => panic!("Unexpected raise-only size"),
                     BetSize::Additive(adder, _) => actions.push(Action::Bet(adder)),
                     BetSize::Geometric(num_streets, max_ratio) => {
                         let num_streets = match num_streets {
@@ -636,6 +669,11 @@ impl ActionTree {
                         BetSize::PrevBetRelative(ratio) => {
                             let amount = (prev_amount as f64 * ratio).round() as i32;
                             actions.push(Action::Raise(amount));
+                        }
+                        BetSize::PotRelativeByStreetPot(threshold, small, large) => {
+                            let street_pot = pot - 2 * prev_amount;
+                            let ratio = if street_pot < threshold { small } else { large };
+                            actions.push(Action::Raise(prev_amount + (pot as f64 * ratio).round() as i32));
                         }
                         BetSize::Additive(adder, raise_cap) => {
                             if raise_cap == 0 || info.num_bets <= raise_cap {
@@ -1049,6 +1087,55 @@ pub(crate) fn count_num_action_nodes(node: &ActionTreeNode) -> [u64; 3] {
         ret = [0, ret[0], ret[1]];
     }
     ret
+}
+
+/// Returns the number of action nodes while treating called flop and turn
+/// all-in chance nodes as exact matrix leaves.
+pub(crate) fn count_num_action_nodes_exact_allin_matrix(
+    node: &ActionTreeNode,
+    effective_stack: i32,
+) -> [u64; 3] {
+    let mut ret = [0, 0, 0];
+    count_num_action_nodes_exact_allin_matrix_recursive(node, 0, effective_stack, &mut ret);
+    if ret[1] == 0 {
+        ret = [0, 0, ret[0]];
+    } else if ret[2] == 0 {
+        ret = [0, ret[0], ret[1]];
+    }
+    ret
+}
+
+fn count_num_action_nodes_exact_allin_matrix_recursive(
+    node: &ActionTreeNode,
+    street: usize,
+    effective_stack: i32,
+    count: &mut [u64; 3],
+) {
+    count[street] += 1;
+    if node.is_terminal()
+        || (street < BoardState::River as usize
+            && node.is_chance()
+            && node.amount == effective_stack)
+    {
+        return;
+    }
+    if node.is_chance() {
+        count_num_action_nodes_exact_allin_matrix_recursive(
+            &node.children[0].lock(),
+            street + 1,
+            effective_stack,
+            count,
+        );
+    } else {
+        for child in &node.children {
+            count_num_action_nodes_exact_allin_matrix_recursive(
+                &child.lock(),
+                street,
+                effective_stack,
+                count,
+            );
+        }
+    }
 }
 
 fn count_num_action_nodes_recursive(node: &ActionTreeNode, street: usize, count: &mut [u64; 3]) {

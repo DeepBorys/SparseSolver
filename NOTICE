@@ -1,0 +1,21 @@
+SparseSolver
+
+Based on the postflop-solver engine by Wataru Inariba (b-inary).
+Copyright (C) 2022 Wataru Inariba.
+https://github.com/b-inary/postflop-solver
+
+Betting-line navigation adapted from Desktop Postflop by Wataru Inariba.
+https://github.com/b-inary/desktop-postflop
+
+SparseSolver modifications and original additions:
+Copyright (C) 2026 Jerzy Slaby (DeepBorys).
+
+Both the upstream code and SparseSolver additions are distributed under the
+GNU Affero General Public License, version 3 or (at your option) any later
+version (SPDX: AGPL-3.0-or-later). See LICENSE for the complete terms.
+
+This program comes WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+SparseSolver is a modified project. Upstream attribution does not imply
+that Wataru Inariba endorses SparseSolver's modifications or results.

@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "case": "QJ2 normal single-size; pot180/stack910; flop52%,turn55%,river70%,raises45%;canonical normal donk/all-in/merge rules",
+  "policy_provenance": "Saved native policies audited in development backup commit4c93afb1; matched original benchmark probability vectors within3e-8",
+  "probability_absolute_tolerance": 0.0001,
+  "probability_sum_tolerance": 2e-06,
+  "full_exploitability_tolerance_pct_pot": 0.005,
+  "models": {
+    "1x1": {
+      "iterations": 60,
+      "file": "1x1.csv.gz",
+      "sha256": "b55a04499273037728409655092b8428ceb17ad8369c49e52b548322ba3bd26c",
+      "entries": 11024,
+      "flop_nodes": 12
+    },
+    "2x2": {
+      "iterations": 120,
+      "file": "2x2.csv.gz",
+      "sha256": "7fdff14e4546934a9e35c61bbca4d89d51be01254935adde142a86d3b292d451",
+      "entries": 11024,
+      "flop_nodes": 12
+    },
+    "4x4": {
+      "iterations": 150,
+      "file": "4x4.csv.gz",
+      "sha256": "d9b1614660b11c0a2c8cde731106651c580d6f3fb1974e13bb7dcb23986613b9",
+      "entries": 11024,
+      "flop_nodes": 12
+    },
+    "6x6": {
+      "iterations": 200,
+      "file": "6x6.csv.gz",
+      "sha256": "6dc01ead47a0b811b559870800ffc063cada2767991da810d5ef88cd2ad19eda",
+      "entries": 11024,
+      "flop_nodes": 12
+    }
+  },
+  "assembly": {
+    "seed_iterations": 120,
+    "refine_iterations": 100,
+    "frontiers": 343,
+    "full_tree_exploitability_pct_pot": 1.300190806388855,
+    "flop_frozen": true,
+    "full49x48": true
+  },
+  "staged": {
+    "seed_iterations": 120,
+    "checkpoints": {
+      "0": 105.67829,
+      "10": 4.0912504,
+      "20": 1.9991374
+    }
+  },
+  "scope": "Numerical regression fixtures, not exact Nash ground truth. No timing assertion and no locked-BR loss recomputation."
+}

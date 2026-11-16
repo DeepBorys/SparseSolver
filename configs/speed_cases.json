@@ -1,0 +1,1447 @@
+{
+  "schema": 1,
+  "situations": 40,
+  "configurations": 160,
+  "cases": {
+    "QsJh2h_normal_1x1": {
+      "case_id": "QsJh2h_normal",
+      "flop": "QsJh2h",
+      "tree": "normal",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/QsJh2h_normal_1x1.tsv",
+      "expected_policy_sha256": "0eb09f9cb794472215c1dff545ca87ad7daa7b7ba6661b2ad4b2eb619fc7b627"
+    },
+    "QsJh2h_normal_2x2": {
+      "case_id": "QsJh2h_normal",
+      "flop": "QsJh2h",
+      "tree": "normal",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/QsJh2h_normal_2x2.tsv",
+      "expected_policy_sha256": "6297842d9fe3caaa6f67193e685c28ffa3c4b53f8e57ee6258ba9b7ce9519557"
+    },
+    "QsJh2h_normal_4x4": {
+      "case_id": "QsJh2h_normal",
+      "flop": "QsJh2h",
+      "tree": "normal",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/QsJh2h_normal_4x4.tsv",
+      "expected_policy_sha256": "4c3d09014206f3e0c677609cbc5dde3581f309d05693aa1626e52804d8f211e6"
+    },
+    "QsJh2h_normal_6x6": {
+      "case_id": "QsJh2h_normal",
+      "flop": "QsJh2h",
+      "tree": "normal",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/QsJh2h_normal_6x6.tsv",
+      "expected_policy_sha256": "2cec0e865eef227d9a1d7da2ba1175a4788c14c519d39a848473d70d3835bfbb"
+    },
+    "QsJh2h_wide_1x1": {
+      "case_id": "QsJh2h_wide",
+      "flop": "QsJh2h",
+      "tree": "wide",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/QsJh2h_wide_1x1.tsv",
+      "expected_policy_sha256": "d9f0702b36ab087985981805921f4429849280359491ee00f82fb606d72a4774"
+    },
+    "QsJh2h_wide_2x2": {
+      "case_id": "QsJh2h_wide",
+      "flop": "QsJh2h",
+      "tree": "wide",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/QsJh2h_wide_2x2.tsv",
+      "expected_policy_sha256": "711103a0fa893b59f4466b3fb1143d665a1303bd8e4fc33a81b3231813a05649"
+    },
+    "QsJh2h_wide_4x4": {
+      "case_id": "QsJh2h_wide",
+      "flop": "QsJh2h",
+      "tree": "wide",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/QsJh2h_wide_4x4.tsv",
+      "expected_policy_sha256": "8a6b495a2d5a69fea8e774b83f42c9c7499ccf5478e10fa3a36d4cec8a698d6b"
+    },
+    "QsJh2h_wide_6x6": {
+      "case_id": "QsJh2h_wide",
+      "flop": "QsJh2h",
+      "tree": "wide",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/QsJh2h_wide_6x6.tsv",
+      "expected_policy_sha256": "ba18f99b55d74edc7171c54d0fe2e7e4dba213bfcb0be3e2b23958b7a9ed2a2c"
+    },
+    "QsJh2h_forced_ip_checks_1x1": {
+      "case_id": "QsJh2h_forced_ip_checks",
+      "flop": "QsJh2h",
+      "tree": "forced_ip_checks",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/QsJh2h_forced_ip_checks_1x1.tsv",
+      "expected_policy_sha256": "c0589507bd4b7fb36ec1b0880c54b55de895338745f59930728a0c6c56f1dd88"
+    },
+    "QsJh2h_forced_ip_checks_2x2": {
+      "case_id": "QsJh2h_forced_ip_checks",
+      "flop": "QsJh2h",
+      "tree": "forced_ip_checks",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/QsJh2h_forced_ip_checks_2x2.tsv",
+      "expected_policy_sha256": "e8262f1b774af7363a5e8a0093fccd24a7863477d6c597e5e51a800083cc7813"
+    },
+    "QsJh2h_forced_ip_checks_4x4": {
+      "case_id": "QsJh2h_forced_ip_checks",
+      "flop": "QsJh2h",
+      "tree": "forced_ip_checks",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/QsJh2h_forced_ip_checks_4x4.tsv",
+      "expected_policy_sha256": "5dbdd85f1e3370437b1d0c8cd2ad52ee1fe1cfaa2b35a2aace62a48f2e8da495"
+    },
+    "QsJh2h_forced_ip_checks_6x6": {
+      "case_id": "QsJh2h_forced_ip_checks",
+      "flop": "QsJh2h",
+      "tree": "forced_ip_checks",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/QsJh2h_forced_ip_checks_6x6.tsv",
+      "expected_policy_sha256": "dbf79cedf8ec0d83d94041431e24f9925f58dfcd91b3fbc369cd5443a6a58ac4"
+    },
+    "QsJh2h_forced_ip_bets_1x1": {
+      "case_id": "QsJh2h_forced_ip_bets",
+      "flop": "QsJh2h",
+      "tree": "forced_ip_bets",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/QsJh2h_forced_ip_bets_1x1.tsv",
+      "expected_policy_sha256": "15980288c1f557ad5db87c87136aae3315c050c0c90ec3b8b2c8f4c2b3e18238"
+    },
+    "QsJh2h_forced_ip_bets_2x2": {
+      "case_id": "QsJh2h_forced_ip_bets",
+      "flop": "QsJh2h",
+      "tree": "forced_ip_bets",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/QsJh2h_forced_ip_bets_2x2.tsv",
+      "expected_policy_sha256": "a7b9fdb020e54183a0458c09a64bce5a92a55adf5de6b09a699845506924b399"
+    },
+    "QsJh2h_forced_ip_bets_4x4": {
+      "case_id": "QsJh2h_forced_ip_bets",
+      "flop": "QsJh2h",
+      "tree": "forced_ip_bets",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/QsJh2h_forced_ip_bets_4x4.tsv",
+      "expected_policy_sha256": "2d56a5e207a9e69ba4c28a183b19abfb088dcc5385477e5709466fe01bd6d607"
+    },
+    "QsJh2h_forced_ip_bets_6x6": {
+      "case_id": "QsJh2h_forced_ip_bets",
+      "flop": "QsJh2h",
+      "tree": "forced_ip_bets",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/QsJh2h_forced_ip_bets_6x6.tsv",
+      "expected_policy_sha256": "a0500b457c949e65a8b06185e5f8125bb480bed03fd937654708e9271298dcda"
+    },
+    "QsJh2h_SRP_deep_1x1": {
+      "case_id": "QsJh2h_SRP_deep",
+      "flop": "QsJh2h",
+      "tree": "SRP_deep",
+      "model": "1x1",
+      "iterations": 120,
+      "config": "configs/speed/QsJh2h_SRP_deep_1x1.tsv",
+      "expected_policy_sha256": "80fc04bbd5a08a9d2c211953ea30bb6a1b9872594352a923f271af62ba7021a6"
+    },
+    "QsJh2h_SRP_deep_2x2": {
+      "case_id": "QsJh2h_SRP_deep",
+      "flop": "QsJh2h",
+      "tree": "SRP_deep",
+      "model": "2x2",
+      "iterations": 200,
+      "config": "configs/speed/QsJh2h_SRP_deep_2x2.tsv",
+      "expected_policy_sha256": "95b24449ad66893a37c5c379ceff40c8daf0b4244069a7017ab3045e702326d3"
+    },
+    "QsJh2h_SRP_deep_4x4": {
+      "case_id": "QsJh2h_SRP_deep",
+      "flop": "QsJh2h",
+      "tree": "SRP_deep",
+      "model": "4x4",
+      "iterations": 250,
+      "config": "configs/speed/QsJh2h_SRP_deep_4x4.tsv",
+      "expected_policy_sha256": "bfe3f053efdbbb5cc71f47a627c72a0a4caa6ce30e2f94859c1109b5920518ce"
+    },
+    "QsJh2h_SRP_deep_6x6": {
+      "case_id": "QsJh2h_SRP_deep",
+      "flop": "QsJh2h",
+      "tree": "SRP_deep",
+      "model": "6x6",
+      "iterations": 300,
+      "config": "configs/speed/QsJh2h_SRP_deep_6x6.tsv",
+      "expected_policy_sha256": "d1e72751f8b41f51d8b30297dbcd63ddc4da610325de68ebae658e641b100d87"
+    },
+    "Ks4h4d_normal_1x1": {
+      "case_id": "Ks4h4d_normal",
+      "flop": "Ks4h4d",
+      "tree": "normal",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Ks4h4d_normal_1x1.tsv",
+      "expected_policy_sha256": "76d0b5290047ad404c84a354d81d1f816b796160b9f01bdf8b7bd867fc36ddf9"
+    },
+    "Ks4h4d_normal_2x2": {
+      "case_id": "Ks4h4d_normal",
+      "flop": "Ks4h4d",
+      "tree": "normal",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Ks4h4d_normal_2x2.tsv",
+      "expected_policy_sha256": "dce6f015b82890269c6b43b556b5d3874a46781ccea27c07f6f13362c440b956"
+    },
+    "Ks4h4d_normal_4x4": {
+      "case_id": "Ks4h4d_normal",
+      "flop": "Ks4h4d",
+      "tree": "normal",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Ks4h4d_normal_4x4.tsv",
+      "expected_policy_sha256": "f387011225a46032fd2740e26eb6f099e34f7b75d6e2e5b37768e6fcb6e91f2a"
+    },
+    "Ks4h4d_normal_6x6": {
+      "case_id": "Ks4h4d_normal",
+      "flop": "Ks4h4d",
+      "tree": "normal",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Ks4h4d_normal_6x6.tsv",
+      "expected_policy_sha256": "0516277779f9ecc72d850ad41790c89b12f2ac66eb2cccfcda6a5300bc72bd92"
+    },
+    "Ks4h4d_wide_1x1": {
+      "case_id": "Ks4h4d_wide",
+      "flop": "Ks4h4d",
+      "tree": "wide",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Ks4h4d_wide_1x1.tsv",
+      "expected_policy_sha256": "cba0642adad83febb36dcf231e7795cde2430c0ba7a0b1ed53635850d21313d5"
+    },
+    "Ks4h4d_wide_2x2": {
+      "case_id": "Ks4h4d_wide",
+      "flop": "Ks4h4d",
+      "tree": "wide",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Ks4h4d_wide_2x2.tsv",
+      "expected_policy_sha256": "6f611dc12a14a9e3de099dd798a4e0679dd4c0f976ba5e9e892ea0cc8dc2be2b"
+    },
+    "Ks4h4d_wide_4x4": {
+      "case_id": "Ks4h4d_wide",
+      "flop": "Ks4h4d",
+      "tree": "wide",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Ks4h4d_wide_4x4.tsv",
+      "expected_policy_sha256": "2f9d3c5b478269fea18d821c2be342f8917f0375cb8353c1172881497212e7b2"
+    },
+    "Ks4h4d_wide_6x6": {
+      "case_id": "Ks4h4d_wide",
+      "flop": "Ks4h4d",
+      "tree": "wide",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Ks4h4d_wide_6x6.tsv",
+      "expected_policy_sha256": "4a3cc4eab643b407e0c2a2bb2223c50c8e007e91fc2af70e3ca6afb3df769597"
+    },
+    "Ks4h4d_forced_ip_checks_1x1": {
+      "case_id": "Ks4h4d_forced_ip_checks",
+      "flop": "Ks4h4d",
+      "tree": "forced_ip_checks",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Ks4h4d_forced_ip_checks_1x1.tsv",
+      "expected_policy_sha256": "3b73853f09f343ab9a27ce410981d3b36cdc52bc642fdac2b933a74224ac1d7e"
+    },
+    "Ks4h4d_forced_ip_checks_2x2": {
+      "case_id": "Ks4h4d_forced_ip_checks",
+      "flop": "Ks4h4d",
+      "tree": "forced_ip_checks",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Ks4h4d_forced_ip_checks_2x2.tsv",
+      "expected_policy_sha256": "8dc668e2a991daeb1494abbcd8c2c0956d8e84eb77d6488d605c1c558270d5ec"
+    },
+    "Ks4h4d_forced_ip_checks_4x4": {
+      "case_id": "Ks4h4d_forced_ip_checks",
+      "flop": "Ks4h4d",
+      "tree": "forced_ip_checks",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Ks4h4d_forced_ip_checks_4x4.tsv",
+      "expected_policy_sha256": "e0260e870905a8ffb863ca24da84578cc16b163855ee06f28d56d8afae5e657b"
+    },
+    "Ks4h4d_forced_ip_checks_6x6": {
+      "case_id": "Ks4h4d_forced_ip_checks",
+      "flop": "Ks4h4d",
+      "tree": "forced_ip_checks",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Ks4h4d_forced_ip_checks_6x6.tsv",
+      "expected_policy_sha256": "17ff7cfc7c141f54ade6a3831bb36723603c621279e9053a3a9c3c93d59dabd2"
+    },
+    "Ks4h4d_forced_ip_bets_1x1": {
+      "case_id": "Ks4h4d_forced_ip_bets",
+      "flop": "Ks4h4d",
+      "tree": "forced_ip_bets",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Ks4h4d_forced_ip_bets_1x1.tsv",
+      "expected_policy_sha256": "29f4bbaa55deea73e82b3c5b1bf34a7be51153382e9f6c0a34bb4d03dc99c5d3"
+    },
+    "Ks4h4d_forced_ip_bets_2x2": {
+      "case_id": "Ks4h4d_forced_ip_bets",
+      "flop": "Ks4h4d",
+      "tree": "forced_ip_bets",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Ks4h4d_forced_ip_bets_2x2.tsv",
+      "expected_policy_sha256": "8d5a511cd6eddc9e4d0877bea40797cd2a4efe5a5309c96291f1962a52a4b7c9"
+    },
+    "Ks4h4d_forced_ip_bets_4x4": {
+      "case_id": "Ks4h4d_forced_ip_bets",
+      "flop": "Ks4h4d",
+      "tree": "forced_ip_bets",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Ks4h4d_forced_ip_bets_4x4.tsv",
+      "expected_policy_sha256": "e2ae5335c78ba69bbbfb7722c23adcda1f03d1b078f246c37d00b05be15c9386"
+    },
+    "Ks4h4d_forced_ip_bets_6x6": {
+      "case_id": "Ks4h4d_forced_ip_bets",
+      "flop": "Ks4h4d",
+      "tree": "forced_ip_bets",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Ks4h4d_forced_ip_bets_6x6.tsv",
+      "expected_policy_sha256": "3f486bd5c9dd0bb6685e9f16697472179d1312e3309ca69874696887bebe1790"
+    },
+    "Ks4h4d_SRP_deep_1x1": {
+      "case_id": "Ks4h4d_SRP_deep",
+      "flop": "Ks4h4d",
+      "tree": "SRP_deep",
+      "model": "1x1",
+      "iterations": 120,
+      "config": "configs/speed/Ks4h4d_SRP_deep_1x1.tsv",
+      "expected_policy_sha256": "735278b2ceeaf159a3dbb467315e5f03c8932aa1ab22430361608565176c81ff"
+    },
+    "Ks4h4d_SRP_deep_2x2": {
+      "case_id": "Ks4h4d_SRP_deep",
+      "flop": "Ks4h4d",
+      "tree": "SRP_deep",
+      "model": "2x2",
+      "iterations": 200,
+      "config": "configs/speed/Ks4h4d_SRP_deep_2x2.tsv",
+      "expected_policy_sha256": "4dea66cac40833f0533284c9b2c8ebf0a28603f3d14b4f15292ba234b7f471ad"
+    },
+    "Ks4h4d_SRP_deep_4x4": {
+      "case_id": "Ks4h4d_SRP_deep",
+      "flop": "Ks4h4d",
+      "tree": "SRP_deep",
+      "model": "4x4",
+      "iterations": 250,
+      "config": "configs/speed/Ks4h4d_SRP_deep_4x4.tsv",
+      "expected_policy_sha256": "a09e5c9ed9a5ac82ccd393543bb02791e2257e5bf68093aa3e6baa71463da769"
+    },
+    "Ks4h4d_SRP_deep_6x6": {
+      "case_id": "Ks4h4d_SRP_deep",
+      "flop": "Ks4h4d",
+      "tree": "SRP_deep",
+      "model": "6x6",
+      "iterations": 300,
+      "config": "configs/speed/Ks4h4d_SRP_deep_6x6.tsv",
+      "expected_policy_sha256": "8cbee723f634bc3767e8db7aa08942d88bf8d284f80e044bcbd74775b26f45c7"
+    },
+    "As9h4d_normal_1x1": {
+      "case_id": "As9h4d_normal",
+      "flop": "As9h4d",
+      "tree": "normal",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/As9h4d_normal_1x1.tsv",
+      "expected_policy_sha256": "70e9de553ee9a7b6fa2d66b14b4b1fa566f88ff4eff6ed25d638d6f5f02fae78"
+    },
+    "As9h4d_normal_2x2": {
+      "case_id": "As9h4d_normal",
+      "flop": "As9h4d",
+      "tree": "normal",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/As9h4d_normal_2x2.tsv",
+      "expected_policy_sha256": "717cb9b0ef0b5c7b10bf2fe488db9d96214cf1e266d17334cf4cd947d0ea13cf"
+    },
+    "As9h4d_normal_4x4": {
+      "case_id": "As9h4d_normal",
+      "flop": "As9h4d",
+      "tree": "normal",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/As9h4d_normal_4x4.tsv",
+      "expected_policy_sha256": "31eeb7deab6999ed7c5e9076d222a06af31def13352654cd861af69497e0314b"
+    },
+    "As9h4d_normal_6x6": {
+      "case_id": "As9h4d_normal",
+      "flop": "As9h4d",
+      "tree": "normal",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/As9h4d_normal_6x6.tsv",
+      "expected_policy_sha256": "52c0073bb9fcc2f0a5ff0aebb47a73c89c7bedbe509580fe00c7222d226a6c7d"
+    },
+    "As9h4d_wide_1x1": {
+      "case_id": "As9h4d_wide",
+      "flop": "As9h4d",
+      "tree": "wide",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/As9h4d_wide_1x1.tsv",
+      "expected_policy_sha256": "361aebacb566bb3931a8b81d273f99fb3bcb732b057786d0d4efe50180cdc52f"
+    },
+    "As9h4d_wide_2x2": {
+      "case_id": "As9h4d_wide",
+      "flop": "As9h4d",
+      "tree": "wide",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/As9h4d_wide_2x2.tsv",
+      "expected_policy_sha256": "d1c4a25efa6fdca9ce3f5b7e4fc8ee6431cb7d089fbe4ba4436f45fae6069734"
+    },
+    "As9h4d_wide_4x4": {
+      "case_id": "As9h4d_wide",
+      "flop": "As9h4d",
+      "tree": "wide",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/As9h4d_wide_4x4.tsv",
+      "expected_policy_sha256": "44448571cb5e5b8045203c26aded66332a0b66180cf6aafd06c57f84bfc3ceda"
+    },
+    "As9h4d_wide_6x6": {
+      "case_id": "As9h4d_wide",
+      "flop": "As9h4d",
+      "tree": "wide",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/As9h4d_wide_6x6.tsv",
+      "expected_policy_sha256": "39e9038917419371bc85f703f36f9df054833c29784bd94fdce0ec94cb8a4afa"
+    },
+    "As9h4d_forced_ip_checks_1x1": {
+      "case_id": "As9h4d_forced_ip_checks",
+      "flop": "As9h4d",
+      "tree": "forced_ip_checks",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/As9h4d_forced_ip_checks_1x1.tsv",
+      "expected_policy_sha256": "242c7937eff273511e4bc73dfaac4dd16206d901e779a667e5daf31fa8053362"
+    },
+    "As9h4d_forced_ip_checks_2x2": {
+      "case_id": "As9h4d_forced_ip_checks",
+      "flop": "As9h4d",
+      "tree": "forced_ip_checks",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/As9h4d_forced_ip_checks_2x2.tsv",
+      "expected_policy_sha256": "8de848f8c82b09469feecd11a4700916f68b0a66e46e1f55a0d633910c94faae"
+    },
+    "As9h4d_forced_ip_checks_4x4": {
+      "case_id": "As9h4d_forced_ip_checks",
+      "flop": "As9h4d",
+      "tree": "forced_ip_checks",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/As9h4d_forced_ip_checks_4x4.tsv",
+      "expected_policy_sha256": "31ab329a9ed336e697618f446603ffe738611a4cb2772a278370e5a1f45a84a4"
+    },
+    "As9h4d_forced_ip_checks_6x6": {
+      "case_id": "As9h4d_forced_ip_checks",
+      "flop": "As9h4d",
+      "tree": "forced_ip_checks",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/As9h4d_forced_ip_checks_6x6.tsv",
+      "expected_policy_sha256": "d4083b02835d085c80ab6c31541b2a0653d6660cfbb2ae741a1858ec77b10c25"
+    },
+    "As9h4d_forced_ip_bets_1x1": {
+      "case_id": "As9h4d_forced_ip_bets",
+      "flop": "As9h4d",
+      "tree": "forced_ip_bets",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/As9h4d_forced_ip_bets_1x1.tsv",
+      "expected_policy_sha256": "caa605e3f20f91de9c8cc7a2cae98d6988f5babfaa7bd72fecc46e4e5f6a9090"
+    },
+    "As9h4d_forced_ip_bets_2x2": {
+      "case_id": "As9h4d_forced_ip_bets",
+      "flop": "As9h4d",
+      "tree": "forced_ip_bets",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/As9h4d_forced_ip_bets_2x2.tsv",
+      "expected_policy_sha256": "eb13d1ecb159ecdcfa599967d40c7c10a238307faebabb0254651c516b63ddbc"
+    },
+    "As9h4d_forced_ip_bets_4x4": {
+      "case_id": "As9h4d_forced_ip_bets",
+      "flop": "As9h4d",
+      "tree": "forced_ip_bets",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/As9h4d_forced_ip_bets_4x4.tsv",
+      "expected_policy_sha256": "7bec1930f40ad50eafa30f5e83218d3816474e2ac8bf42276b73ad35ce14cba9"
+    },
+    "As9h4d_forced_ip_bets_6x6": {
+      "case_id": "As9h4d_forced_ip_bets",
+      "flop": "As9h4d",
+      "tree": "forced_ip_bets",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/As9h4d_forced_ip_bets_6x6.tsv",
+      "expected_policy_sha256": "b6528b8f5c57cd6f33b93157d03875580c224dcda1807f787740939f6f09ffcb"
+    },
+    "As9h4d_SRP_deep_1x1": {
+      "case_id": "As9h4d_SRP_deep",
+      "flop": "As9h4d",
+      "tree": "SRP_deep",
+      "model": "1x1",
+      "iterations": 120,
+      "config": "configs/speed/As9h4d_SRP_deep_1x1.tsv",
+      "expected_policy_sha256": "aca8d8965d06bbfaa62a0af702f9bc29528648be1d3cb3c8a1a5c73d716250ab"
+    },
+    "As9h4d_SRP_deep_2x2": {
+      "case_id": "As9h4d_SRP_deep",
+      "flop": "As9h4d",
+      "tree": "SRP_deep",
+      "model": "2x2",
+      "iterations": 200,
+      "config": "configs/speed/As9h4d_SRP_deep_2x2.tsv",
+      "expected_policy_sha256": "7df015bdc5d27caa84224b2362a6504a41478099933f813745800d9ef6f2d8f3"
+    },
+    "As9h4d_SRP_deep_4x4": {
+      "case_id": "As9h4d_SRP_deep",
+      "flop": "As9h4d",
+      "tree": "SRP_deep",
+      "model": "4x4",
+      "iterations": 250,
+      "config": "configs/speed/As9h4d_SRP_deep_4x4.tsv",
+      "expected_policy_sha256": "f7a2038f3f87cdb04e6620fc2b7915464e8cacfeafad470c70ead7c47bee6f55"
+    },
+    "As9h4d_SRP_deep_6x6": {
+      "case_id": "As9h4d_SRP_deep",
+      "flop": "As9h4d",
+      "tree": "SRP_deep",
+      "model": "6x6",
+      "iterations": 300,
+      "config": "configs/speed/As9h4d_SRP_deep_6x6.tsv",
+      "expected_policy_sha256": "2958551e8c17be5391cff07dd31f438072b2121a47eacb93b34ef553da598152"
+    },
+    "Js9s4h_normal_1x1": {
+      "case_id": "Js9s4h_normal",
+      "flop": "Js9s4h",
+      "tree": "normal",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Js9s4h_normal_1x1.tsv",
+      "expected_policy_sha256": "561b9aa2d52aa2fcd3b8487d044abb2abe3e8f5d0922a0d930077730408bf81f"
+    },
+    "Js9s4h_normal_2x2": {
+      "case_id": "Js9s4h_normal",
+      "flop": "Js9s4h",
+      "tree": "normal",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Js9s4h_normal_2x2.tsv",
+      "expected_policy_sha256": "d746149846e707da1a70dbb43f5e473a2e19110fa3086efe676cec31f9a4bf1c"
+    },
+    "Js9s4h_normal_4x4": {
+      "case_id": "Js9s4h_normal",
+      "flop": "Js9s4h",
+      "tree": "normal",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Js9s4h_normal_4x4.tsv",
+      "expected_policy_sha256": "ba172af83f4b02a75c3a267845eca643c6b957ed18c288d1ee7b1677d515a244"
+    },
+    "Js9s4h_normal_6x6": {
+      "case_id": "Js9s4h_normal",
+      "flop": "Js9s4h",
+      "tree": "normal",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Js9s4h_normal_6x6.tsv",
+      "expected_policy_sha256": "77d0604deaa479dd29ea28475153f294fea69b106d5fdde5a7ef601009509996"
+    },
+    "Js9s4h_wide_1x1": {
+      "case_id": "Js9s4h_wide",
+      "flop": "Js9s4h",
+      "tree": "wide",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Js9s4h_wide_1x1.tsv",
+      "expected_policy_sha256": "fe922555cfdf4958a7374163c5affdb3fa6770996741b03c1b7cfab06fe434fc"
+    },
+    "Js9s4h_wide_2x2": {
+      "case_id": "Js9s4h_wide",
+      "flop": "Js9s4h",
+      "tree": "wide",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Js9s4h_wide_2x2.tsv",
+      "expected_policy_sha256": "383417e37b3d87f7ba7e9357c6e3f5e1d8c911e92143c57f9b399096805e87a9"
+    },
+    "Js9s4h_wide_4x4": {
+      "case_id": "Js9s4h_wide",
+      "flop": "Js9s4h",
+      "tree": "wide",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Js9s4h_wide_4x4.tsv",
+      "expected_policy_sha256": "d0bf301a04e678178d94558d8abebcc9d5d8290b9bf72e631206f813703c4a78"
+    },
+    "Js9s4h_wide_6x6": {
+      "case_id": "Js9s4h_wide",
+      "flop": "Js9s4h",
+      "tree": "wide",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Js9s4h_wide_6x6.tsv",
+      "expected_policy_sha256": "0d5b1c327627b8b66a833d620ad5b9551b3810f9b3aa00ea6546311f587b1d16"
+    },
+    "Js9s4h_forced_ip_checks_1x1": {
+      "case_id": "Js9s4h_forced_ip_checks",
+      "flop": "Js9s4h",
+      "tree": "forced_ip_checks",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Js9s4h_forced_ip_checks_1x1.tsv",
+      "expected_policy_sha256": "5dc2da0abdb8612fef798fe650f270ce9888498de4b5975a9f62808eac922e34"
+    },
+    "Js9s4h_forced_ip_checks_2x2": {
+      "case_id": "Js9s4h_forced_ip_checks",
+      "flop": "Js9s4h",
+      "tree": "forced_ip_checks",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Js9s4h_forced_ip_checks_2x2.tsv",
+      "expected_policy_sha256": "2ae7e23eff08f6fedcc0c828441590e0ad4038d0fe137be07056e81424ff1ecc"
+    },
+    "Js9s4h_forced_ip_checks_4x4": {
+      "case_id": "Js9s4h_forced_ip_checks",
+      "flop": "Js9s4h",
+      "tree": "forced_ip_checks",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Js9s4h_forced_ip_checks_4x4.tsv",
+      "expected_policy_sha256": "bd060bfcf8e3ba20f6a45068da938cf907454839bcecaafd5a4b094b1406e0f2"
+    },
+    "Js9s4h_forced_ip_checks_6x6": {
+      "case_id": "Js9s4h_forced_ip_checks",
+      "flop": "Js9s4h",
+      "tree": "forced_ip_checks",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Js9s4h_forced_ip_checks_6x6.tsv",
+      "expected_policy_sha256": "c2c13f5a2198f5bcf8b1d56e25d831fad95d61b6f03b3c29eedb7b5a22df50ef"
+    },
+    "Js9s4h_forced_ip_bets_1x1": {
+      "case_id": "Js9s4h_forced_ip_bets",
+      "flop": "Js9s4h",
+      "tree": "forced_ip_bets",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Js9s4h_forced_ip_bets_1x1.tsv",
+      "expected_policy_sha256": "a23586e0cedee3cdc1cccb8db206fb61c0d4b7e874ff450393f1ef97c0995bfb"
+    },
+    "Js9s4h_forced_ip_bets_2x2": {
+      "case_id": "Js9s4h_forced_ip_bets",
+      "flop": "Js9s4h",
+      "tree": "forced_ip_bets",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Js9s4h_forced_ip_bets_2x2.tsv",
+      "expected_policy_sha256": "6eb6171266d977576653dc8458474cc69f9ac00f88b16f89dc3d06d988394493"
+    },
+    "Js9s4h_forced_ip_bets_4x4": {
+      "case_id": "Js9s4h_forced_ip_bets",
+      "flop": "Js9s4h",
+      "tree": "forced_ip_bets",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Js9s4h_forced_ip_bets_4x4.tsv",
+      "expected_policy_sha256": "a913c070529ff072d2bb6490abdf6e7f33fa22d3ee7057c1ec03bb036f4425e9"
+    },
+    "Js9s4h_forced_ip_bets_6x6": {
+      "case_id": "Js9s4h_forced_ip_bets",
+      "flop": "Js9s4h",
+      "tree": "forced_ip_bets",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Js9s4h_forced_ip_bets_6x6.tsv",
+      "expected_policy_sha256": "a381543cbcb0ae4b1f1547bc6d1e4855a3a69ce6ac53b3db4cc06183a6de2859"
+    },
+    "Js9s4h_SRP_deep_1x1": {
+      "case_id": "Js9s4h_SRP_deep",
+      "flop": "Js9s4h",
+      "tree": "SRP_deep",
+      "model": "1x1",
+      "iterations": 120,
+      "config": "configs/speed/Js9s4h_SRP_deep_1x1.tsv",
+      "expected_policy_sha256": "c7f62a745ff43b32d32f8d9cc92ded36c2efea9080b9f55f5b48c2e21d08b329"
+    },
+    "Js9s4h_SRP_deep_2x2": {
+      "case_id": "Js9s4h_SRP_deep",
+      "flop": "Js9s4h",
+      "tree": "SRP_deep",
+      "model": "2x2",
+      "iterations": 200,
+      "config": "configs/speed/Js9s4h_SRP_deep_2x2.tsv",
+      "expected_policy_sha256": "2d8c32e2646edf3dbfa892789577c9535c287607fd3c92f79c6705433dc1edfc"
+    },
+    "Js9s4h_SRP_deep_4x4": {
+      "case_id": "Js9s4h_SRP_deep",
+      "flop": "Js9s4h",
+      "tree": "SRP_deep",
+      "model": "4x4",
+      "iterations": 250,
+      "config": "configs/speed/Js9s4h_SRP_deep_4x4.tsv",
+      "expected_policy_sha256": "824a8228f59857742b3b0552a8a78af81d6840ae062360c77c79bc49894116bb"
+    },
+    "Js9s4h_SRP_deep_6x6": {
+      "case_id": "Js9s4h_SRP_deep",
+      "flop": "Js9s4h",
+      "tree": "SRP_deep",
+      "model": "6x6",
+      "iterations": 300,
+      "config": "configs/speed/Js9s4h_SRP_deep_6x6.tsv",
+      "expected_policy_sha256": "415df0b3ac5183f39b44301dc4a16edfc36575bba2e79b41d8b681a6993b5fa8"
+    },
+    "QsTs7h_normal_1x1": {
+      "case_id": "QsTs7h_normal",
+      "flop": "QsTs7h",
+      "tree": "normal",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/QsTs7h_normal_1x1.tsv",
+      "expected_policy_sha256": "321bb4ad2ed135c7d166826626cd4b18ab8328d3d5c6a9fffd5b461a53539738"
+    },
+    "QsTs7h_normal_2x2": {
+      "case_id": "QsTs7h_normal",
+      "flop": "QsTs7h",
+      "tree": "normal",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/QsTs7h_normal_2x2.tsv",
+      "expected_policy_sha256": "f4f6d88e8374ae892dbf42b9bc3199122e95fbfab1c7953c1d1eee20d1cbad70"
+    },
+    "QsTs7h_normal_4x4": {
+      "case_id": "QsTs7h_normal",
+      "flop": "QsTs7h",
+      "tree": "normal",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/QsTs7h_normal_4x4.tsv",
+      "expected_policy_sha256": "78fb27b47b3bbb7ac7cd96598123e59db1ba53cd2f72687dc31dcb5e48be51ff"
+    },
+    "QsTs7h_normal_6x6": {
+      "case_id": "QsTs7h_normal",
+      "flop": "QsTs7h",
+      "tree": "normal",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/QsTs7h_normal_6x6.tsv",
+      "expected_policy_sha256": "3adb92e739ba3db29af2cde5141c9943805b898b9f966b5f3716039f9d982f0b"
+    },
+    "QsTs7h_wide_1x1": {
+      "case_id": "QsTs7h_wide",
+      "flop": "QsTs7h",
+      "tree": "wide",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/QsTs7h_wide_1x1.tsv",
+      "expected_policy_sha256": "529d94ae846d9927497b160820e6ef040d4edb415bc404e539fb1b1fb8166745"
+    },
+    "QsTs7h_wide_2x2": {
+      "case_id": "QsTs7h_wide",
+      "flop": "QsTs7h",
+      "tree": "wide",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/QsTs7h_wide_2x2.tsv",
+      "expected_policy_sha256": "c67dcde74b99692cf0298951cc5f002bd87d2471b99aabbee401b04e61c1b941"
+    },
+    "QsTs7h_wide_4x4": {
+      "case_id": "QsTs7h_wide",
+      "flop": "QsTs7h",
+      "tree": "wide",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/QsTs7h_wide_4x4.tsv",
+      "expected_policy_sha256": "1b634d0d1a12fa537cd3a0eca6b70a60460ec81958f9211452818325a9ac2226"
+    },
+    "QsTs7h_wide_6x6": {
+      "case_id": "QsTs7h_wide",
+      "flop": "QsTs7h",
+      "tree": "wide",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/QsTs7h_wide_6x6.tsv",
+      "expected_policy_sha256": "0c899096487fd3fd10ef96696a902312ee6ec4fa7e0d550c120ba2bbd310bfbe"
+    },
+    "QsTs7h_forced_ip_checks_1x1": {
+      "case_id": "QsTs7h_forced_ip_checks",
+      "flop": "QsTs7h",
+      "tree": "forced_ip_checks",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/QsTs7h_forced_ip_checks_1x1.tsv",
+      "expected_policy_sha256": "a0b8a93172c3ce28630da4ff1ad86c55b01e564f8009bd103638bbc07a7bf1db"
+    },
+    "QsTs7h_forced_ip_checks_2x2": {
+      "case_id": "QsTs7h_forced_ip_checks",
+      "flop": "QsTs7h",
+      "tree": "forced_ip_checks",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/QsTs7h_forced_ip_checks_2x2.tsv",
+      "expected_policy_sha256": "408bac07e99f7613c125f91909de2fdbe3397337fd5a219f08ea52fcb9f22991"
+    },
+    "QsTs7h_forced_ip_checks_4x4": {
+      "case_id": "QsTs7h_forced_ip_checks",
+      "flop": "QsTs7h",
+      "tree": "forced_ip_checks",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/QsTs7h_forced_ip_checks_4x4.tsv",
+      "expected_policy_sha256": "1faf85ec2df8186157598ed467c9c98b43f118b4f3813760be91c546eab0f642"
+    },
+    "QsTs7h_forced_ip_checks_6x6": {
+      "case_id": "QsTs7h_forced_ip_checks",
+      "flop": "QsTs7h",
+      "tree": "forced_ip_checks",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/QsTs7h_forced_ip_checks_6x6.tsv",
+      "expected_policy_sha256": "f8cd57085885b4c395d150e0b9547f685e1a9ff23fdda0d72724cc6ff670e71b"
+    },
+    "QsTs7h_forced_ip_bets_1x1": {
+      "case_id": "QsTs7h_forced_ip_bets",
+      "flop": "QsTs7h",
+      "tree": "forced_ip_bets",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/QsTs7h_forced_ip_bets_1x1.tsv",
+      "expected_policy_sha256": "8a974fa075c42abe25f814c559f742c8750673f42816aeda16d0644ef465acf7"
+    },
+    "QsTs7h_forced_ip_bets_2x2": {
+      "case_id": "QsTs7h_forced_ip_bets",
+      "flop": "QsTs7h",
+      "tree": "forced_ip_bets",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/QsTs7h_forced_ip_bets_2x2.tsv",
+      "expected_policy_sha256": "7b8f4e5815c98f209499e9485dbfcb1be6f9c75575a14c87474d2b948be144ff"
+    },
+    "QsTs7h_forced_ip_bets_4x4": {
+      "case_id": "QsTs7h_forced_ip_bets",
+      "flop": "QsTs7h",
+      "tree": "forced_ip_bets",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/QsTs7h_forced_ip_bets_4x4.tsv",
+      "expected_policy_sha256": "f31037726ecd63dfd1518b30cdd9f69206f842190ac00cad64fce88335bc2b57"
+    },
+    "QsTs7h_forced_ip_bets_6x6": {
+      "case_id": "QsTs7h_forced_ip_bets",
+      "flop": "QsTs7h",
+      "tree": "forced_ip_bets",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/QsTs7h_forced_ip_bets_6x6.tsv",
+      "expected_policy_sha256": "e3df36898187508c1c8618baa89d42c8287d792f41e0fb79dba691cca7738053"
+    },
+    "QsTs7h_SRP_deep_1x1": {
+      "case_id": "QsTs7h_SRP_deep",
+      "flop": "QsTs7h",
+      "tree": "SRP_deep",
+      "model": "1x1",
+      "iterations": 120,
+      "config": "configs/speed/QsTs7h_SRP_deep_1x1.tsv",
+      "expected_policy_sha256": "b146f141c786f3e1cc2d1448e4aeef4c77ff85b932dc4ce41c43317bbca77498"
+    },
+    "QsTs7h_SRP_deep_2x2": {
+      "case_id": "QsTs7h_SRP_deep",
+      "flop": "QsTs7h",
+      "tree": "SRP_deep",
+      "model": "2x2",
+      "iterations": 200,
+      "config": "configs/speed/QsTs7h_SRP_deep_2x2.tsv",
+      "expected_policy_sha256": "67a5d5c410927506f2928daa1f98a416abde8c81b0cbe9f7c7738c74d14c5d8f"
+    },
+    "QsTs7h_SRP_deep_4x4": {
+      "case_id": "QsTs7h_SRP_deep",
+      "flop": "QsTs7h",
+      "tree": "SRP_deep",
+      "model": "4x4",
+      "iterations": 250,
+      "config": "configs/speed/QsTs7h_SRP_deep_4x4.tsv",
+      "expected_policy_sha256": "7dbb76a8eef90ae32ce4be7d285dded24d4eb774c091469d64bef1a6eecb19d0"
+    },
+    "QsTs7h_SRP_deep_6x6": {
+      "case_id": "QsTs7h_SRP_deep",
+      "flop": "QsTs7h",
+      "tree": "SRP_deep",
+      "model": "6x6",
+      "iterations": 300,
+      "config": "configs/speed/QsTs7h_SRP_deep_6x6.tsv",
+      "expected_policy_sha256": "4bedf9c0822672753b1763d99910d756cdd142f32caa70b08cf2c1cc6e4b1a36"
+    },
+    "Js7h3d_normal_1x1": {
+      "case_id": "Js7h3d_normal",
+      "flop": "Js7h3d",
+      "tree": "normal",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Js7h3d_normal_1x1.tsv",
+      "expected_policy_sha256": "f9ee7de54c16b35754bbf30d8782e7ac10ad087ea3347015b0b1da422076e6bb"
+    },
+    "Js7h3d_normal_2x2": {
+      "case_id": "Js7h3d_normal",
+      "flop": "Js7h3d",
+      "tree": "normal",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Js7h3d_normal_2x2.tsv",
+      "expected_policy_sha256": "4a50b7f2d147b8bdbbc282b543a69133f31987bd540a193ab709840d2d63b296"
+    },
+    "Js7h3d_normal_4x4": {
+      "case_id": "Js7h3d_normal",
+      "flop": "Js7h3d",
+      "tree": "normal",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Js7h3d_normal_4x4.tsv",
+      "expected_policy_sha256": "ba935f8cecc0aeb1eec37f76a02b3f2d35d2edc1ba63f381b652010d10399696"
+    },
+    "Js7h3d_normal_6x6": {
+      "case_id": "Js7h3d_normal",
+      "flop": "Js7h3d",
+      "tree": "normal",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Js7h3d_normal_6x6.tsv",
+      "expected_policy_sha256": "d44ec53e3587e912faa1b182d9a2726b015bb759e98a0069d8e6f87a4527c784"
+    },
+    "Js7h3d_wide_1x1": {
+      "case_id": "Js7h3d_wide",
+      "flop": "Js7h3d",
+      "tree": "wide",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Js7h3d_wide_1x1.tsv",
+      "expected_policy_sha256": "228f72129c1809fd915917b8efed069158b4b206e9c85232a786dc5452579308"
+    },
+    "Js7h3d_wide_2x2": {
+      "case_id": "Js7h3d_wide",
+      "flop": "Js7h3d",
+      "tree": "wide",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Js7h3d_wide_2x2.tsv",
+      "expected_policy_sha256": "85c1d2e6ddafb10bdca262f4b8d3647ba7689564f89efe2b21b9c1ef0da34a1a"
+    },
+    "Js7h3d_wide_4x4": {
+      "case_id": "Js7h3d_wide",
+      "flop": "Js7h3d",
+      "tree": "wide",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Js7h3d_wide_4x4.tsv",
+      "expected_policy_sha256": "eda606413d214012be7f497e431b1ddf0869e54780bec2e86836322d659287f8"
+    },
+    "Js7h3d_wide_6x6": {
+      "case_id": "Js7h3d_wide",
+      "flop": "Js7h3d",
+      "tree": "wide",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Js7h3d_wide_6x6.tsv",
+      "expected_policy_sha256": "2a2220c59ce39d8a16739ff37ae10a54495704f2c3a5a881a0ba8a5c8874b5e3"
+    },
+    "Js7h3d_forced_ip_checks_1x1": {
+      "case_id": "Js7h3d_forced_ip_checks",
+      "flop": "Js7h3d",
+      "tree": "forced_ip_checks",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Js7h3d_forced_ip_checks_1x1.tsv",
+      "expected_policy_sha256": "afa0ebd893be0429f48052ae8548b889baa7a61be3bf6d505fa8440eb9b30364"
+    },
+    "Js7h3d_forced_ip_checks_2x2": {
+      "case_id": "Js7h3d_forced_ip_checks",
+      "flop": "Js7h3d",
+      "tree": "forced_ip_checks",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Js7h3d_forced_ip_checks_2x2.tsv",
+      "expected_policy_sha256": "9054c1b2dcab5b9177218569eebbded0c2242f08f3b9411d83d7139d5a099050"
+    },
+    "Js7h3d_forced_ip_checks_4x4": {
+      "case_id": "Js7h3d_forced_ip_checks",
+      "flop": "Js7h3d",
+      "tree": "forced_ip_checks",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Js7h3d_forced_ip_checks_4x4.tsv",
+      "expected_policy_sha256": "a34e7bdd94df7cd98ef63c2ed4eb729152d868a508a53e081f634b2a1e7d07a2"
+    },
+    "Js7h3d_forced_ip_checks_6x6": {
+      "case_id": "Js7h3d_forced_ip_checks",
+      "flop": "Js7h3d",
+      "tree": "forced_ip_checks",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Js7h3d_forced_ip_checks_6x6.tsv",
+      "expected_policy_sha256": "d494416dd33b8534621c04c83cd0387db4daf020cfc76606784d824edcf821bd"
+    },
+    "Js7h3d_forced_ip_bets_1x1": {
+      "case_id": "Js7h3d_forced_ip_bets",
+      "flop": "Js7h3d",
+      "tree": "forced_ip_bets",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Js7h3d_forced_ip_bets_1x1.tsv",
+      "expected_policy_sha256": "1c81ccd6e68c5b0d3b6c9ef9aa5b194a726d0b8549619a1244f10a9ead9078e4"
+    },
+    "Js7h3d_forced_ip_bets_2x2": {
+      "case_id": "Js7h3d_forced_ip_bets",
+      "flop": "Js7h3d",
+      "tree": "forced_ip_bets",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Js7h3d_forced_ip_bets_2x2.tsv",
+      "expected_policy_sha256": "8a5e897bf79d06438bfa7c6e30c2a082844e285ed989e68f2f75a1aca680e2e4"
+    },
+    "Js7h3d_forced_ip_bets_4x4": {
+      "case_id": "Js7h3d_forced_ip_bets",
+      "flop": "Js7h3d",
+      "tree": "forced_ip_bets",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Js7h3d_forced_ip_bets_4x4.tsv",
+      "expected_policy_sha256": "3f7e7c6a28724d9b03d317fa0152f0808a24cc5ef0171e8ed7670b5ebe929bf9"
+    },
+    "Js7h3d_forced_ip_bets_6x6": {
+      "case_id": "Js7h3d_forced_ip_bets",
+      "flop": "Js7h3d",
+      "tree": "forced_ip_bets",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Js7h3d_forced_ip_bets_6x6.tsv",
+      "expected_policy_sha256": "587649064285014dcfe6ae42b9313ccded62fa6efecb7cae698d4dfbb0fa64c5"
+    },
+    "Js7h3d_SRP_deep_1x1": {
+      "case_id": "Js7h3d_SRP_deep",
+      "flop": "Js7h3d",
+      "tree": "SRP_deep",
+      "model": "1x1",
+      "iterations": 120,
+      "config": "configs/speed/Js7h3d_SRP_deep_1x1.tsv",
+      "expected_policy_sha256": "6f72e9298589c428c7b6dd84bda6e6751b097247d07f420797ee7a3d5ebf0ca3"
+    },
+    "Js7h3d_SRP_deep_2x2": {
+      "case_id": "Js7h3d_SRP_deep",
+      "flop": "Js7h3d",
+      "tree": "SRP_deep",
+      "model": "2x2",
+      "iterations": 200,
+      "config": "configs/speed/Js7h3d_SRP_deep_2x2.tsv",
+      "expected_policy_sha256": "0c33ca124fc20c8e8b34690c172312c1c7690d04a151b015763e7d38ca2e543d"
+    },
+    "Js7h3d_SRP_deep_4x4": {
+      "case_id": "Js7h3d_SRP_deep",
+      "flop": "Js7h3d",
+      "tree": "SRP_deep",
+      "model": "4x4",
+      "iterations": 250,
+      "config": "configs/speed/Js7h3d_SRP_deep_4x4.tsv",
+      "expected_policy_sha256": "0545c3366c959f56eb8ae48ec4d170e7aae5899a971591a5a5e88f4dd3c050af"
+    },
+    "Js7h3d_SRP_deep_6x6": {
+      "case_id": "Js7h3d_SRP_deep",
+      "flop": "Js7h3d",
+      "tree": "SRP_deep",
+      "model": "6x6",
+      "iterations": 300,
+      "config": "configs/speed/Js7h3d_SRP_deep_6x6.tsv",
+      "expected_policy_sha256": "bf90f6cabcbe0d4dbbd48ae2c4f84f20072043cee1ee804a6d6d88d97f61d745"
+    },
+    "Td9d6h_normal_1x1": {
+      "case_id": "Td9d6h_normal",
+      "flop": "Td9d6h",
+      "tree": "normal",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Td9d6h_normal_1x1.tsv",
+      "expected_policy_sha256": "22423a1dc203199eb5b7e9b12f633e266344307269488fe41aac0d510dbd5e71"
+    },
+    "Td9d6h_normal_2x2": {
+      "case_id": "Td9d6h_normal",
+      "flop": "Td9d6h",
+      "tree": "normal",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Td9d6h_normal_2x2.tsv",
+      "expected_policy_sha256": "f45f9b3ccfac2a962c88bc86a70a311b156911077d38b71e2cd91b97a5447785"
+    },
+    "Td9d6h_normal_4x4": {
+      "case_id": "Td9d6h_normal",
+      "flop": "Td9d6h",
+      "tree": "normal",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Td9d6h_normal_4x4.tsv",
+      "expected_policy_sha256": "b4ecb0ecf8037739d257160d9ee12fe65a7758802d687638d96a2b6ba815cdf7"
+    },
+    "Td9d6h_normal_6x6": {
+      "case_id": "Td9d6h_normal",
+      "flop": "Td9d6h",
+      "tree": "normal",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Td9d6h_normal_6x6.tsv",
+      "expected_policy_sha256": "12f1c63f79b803d70cb4557dc38bc8c279e2d9337ec781c9a034b5971bbbd107"
+    },
+    "Td9d6h_wide_1x1": {
+      "case_id": "Td9d6h_wide",
+      "flop": "Td9d6h",
+      "tree": "wide",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Td9d6h_wide_1x1.tsv",
+      "expected_policy_sha256": "e1a8e73dfd5a22ff4daefd3d55fb7c8043914da65792cd9cd8ca8878764bde08"
+    },
+    "Td9d6h_wide_2x2": {
+      "case_id": "Td9d6h_wide",
+      "flop": "Td9d6h",
+      "tree": "wide",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Td9d6h_wide_2x2.tsv",
+      "expected_policy_sha256": "47cdf3f6ac82cea4b139d3ca90e7fb53583eb19af3ba42ec228056c707e040b0"
+    },
+    "Td9d6h_wide_4x4": {
+      "case_id": "Td9d6h_wide",
+      "flop": "Td9d6h",
+      "tree": "wide",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Td9d6h_wide_4x4.tsv",
+      "expected_policy_sha256": "527e64d03ad26324c27c9e38c0ebfb902d7eeaf2de37c61b2136f9310ba366f6"
+    },
+    "Td9d6h_wide_6x6": {
+      "case_id": "Td9d6h_wide",
+      "flop": "Td9d6h",
+      "tree": "wide",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Td9d6h_wide_6x6.tsv",
+      "expected_policy_sha256": "f78733a62aa60f4634c4d8b493ed9620fd40dbe3a29ca6a5d8a2a7d17295ccfb"
+    },
+    "Td9d6h_forced_ip_checks_1x1": {
+      "case_id": "Td9d6h_forced_ip_checks",
+      "flop": "Td9d6h",
+      "tree": "forced_ip_checks",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Td9d6h_forced_ip_checks_1x1.tsv",
+      "expected_policy_sha256": "5ef5d816dd6b937b3e5b9df565cbfa98843bc31abb9581c549a795e766422d06"
+    },
+    "Td9d6h_forced_ip_checks_2x2": {
+      "case_id": "Td9d6h_forced_ip_checks",
+      "flop": "Td9d6h",
+      "tree": "forced_ip_checks",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Td9d6h_forced_ip_checks_2x2.tsv",
+      "expected_policy_sha256": "71beeb978fd3a4b7cc75d85f9df736076df9004c6ca7fa21e4a0d2aa55bc6258"
+    },
+    "Td9d6h_forced_ip_checks_4x4": {
+      "case_id": "Td9d6h_forced_ip_checks",
+      "flop": "Td9d6h",
+      "tree": "forced_ip_checks",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Td9d6h_forced_ip_checks_4x4.tsv",
+      "expected_policy_sha256": "712677a115824ecfcd9b5a0baf6a6f0b88322fd4fda42071230e40858bba36b1"
+    },
+    "Td9d6h_forced_ip_checks_6x6": {
+      "case_id": "Td9d6h_forced_ip_checks",
+      "flop": "Td9d6h",
+      "tree": "forced_ip_checks",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Td9d6h_forced_ip_checks_6x6.tsv",
+      "expected_policy_sha256": "463a0499ede32ac4faee4ca65d855d2e22ef35d6fa83fb4b7127b70e08cad132"
+    },
+    "Td9d6h_forced_ip_bets_1x1": {
+      "case_id": "Td9d6h_forced_ip_bets",
+      "flop": "Td9d6h",
+      "tree": "forced_ip_bets",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Td9d6h_forced_ip_bets_1x1.tsv",
+      "expected_policy_sha256": "5434d15bd7b876595285b28500cdea1bb9e7c20b44b1b35f7b5074b70e491ea4"
+    },
+    "Td9d6h_forced_ip_bets_2x2": {
+      "case_id": "Td9d6h_forced_ip_bets",
+      "flop": "Td9d6h",
+      "tree": "forced_ip_bets",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Td9d6h_forced_ip_bets_2x2.tsv",
+      "expected_policy_sha256": "b89ffdf9209d9674ebe3fe2db29c1f65badc3809a5f98a2594034ee52b7d2b80"
+    },
+    "Td9d6h_forced_ip_bets_4x4": {
+      "case_id": "Td9d6h_forced_ip_bets",
+      "flop": "Td9d6h",
+      "tree": "forced_ip_bets",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Td9d6h_forced_ip_bets_4x4.tsv",
+      "expected_policy_sha256": "f51294752d8a07b6a4c78d43a521e1edec61e88badd63495ec9980a4d032dadf"
+    },
+    "Td9d6h_forced_ip_bets_6x6": {
+      "case_id": "Td9d6h_forced_ip_bets",
+      "flop": "Td9d6h",
+      "tree": "forced_ip_bets",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Td9d6h_forced_ip_bets_6x6.tsv",
+      "expected_policy_sha256": "b709f14e1f387fe758971822bc06bff77ec04b70f3f57042a57a4ec5686dc9d6"
+    },
+    "Td9d6h_SRP_deep_1x1": {
+      "case_id": "Td9d6h_SRP_deep",
+      "flop": "Td9d6h",
+      "tree": "SRP_deep",
+      "model": "1x1",
+      "iterations": 120,
+      "config": "configs/speed/Td9d6h_SRP_deep_1x1.tsv",
+      "expected_policy_sha256": "9c8aa4bd1be17d2f6419b8311f93042d79a25b3a1a7648d7e8dc3aa95f06d1f4"
+    },
+    "Td9d6h_SRP_deep_2x2": {
+      "case_id": "Td9d6h_SRP_deep",
+      "flop": "Td9d6h",
+      "tree": "SRP_deep",
+      "model": "2x2",
+      "iterations": 200,
+      "config": "configs/speed/Td9d6h_SRP_deep_2x2.tsv",
+      "expected_policy_sha256": "0d5559c4647a958f2c5dc7c0e0829d7cc77e9f0e332c3eccdb1af2f059c28a87"
+    },
+    "Td9d6h_SRP_deep_4x4": {
+      "case_id": "Td9d6h_SRP_deep",
+      "flop": "Td9d6h",
+      "tree": "SRP_deep",
+      "model": "4x4",
+      "iterations": 250,
+      "config": "configs/speed/Td9d6h_SRP_deep_4x4.tsv",
+      "expected_policy_sha256": "3512de6e3725eb0d942dbb46382a96ecad5e06dd45f029368c26816f513bfc56"
+    },
+    "Td9d6h_SRP_deep_6x6": {
+      "case_id": "Td9d6h_SRP_deep",
+      "flop": "Td9d6h",
+      "tree": "SRP_deep",
+      "model": "6x6",
+      "iterations": 300,
+      "config": "configs/speed/Td9d6h_SRP_deep_6x6.tsv",
+      "expected_policy_sha256": "aed66e645c87d2640a9f5a29ded8c49d198fd0392fb781f14235ab2faa9f2a7e"
+    },
+    "Js8s3s_normal_1x1": {
+      "case_id": "Js8s3s_normal",
+      "flop": "Js8s3s",
+      "tree": "normal",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Js8s3s_normal_1x1.tsv",
+      "expected_policy_sha256": "dfdb2165431070cbc1b11e6c0fde5bbe79fe287a84a48a006430452f0cc42df8"
+    },
+    "Js8s3s_normal_2x2": {
+      "case_id": "Js8s3s_normal",
+      "flop": "Js8s3s",
+      "tree": "normal",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Js8s3s_normal_2x2.tsv",
+      "expected_policy_sha256": "183a44b1572bc29b91909f1c732e3441ae03317b61cbcb00e9666461a624c42b"
+    },
+    "Js8s3s_normal_4x4": {
+      "case_id": "Js8s3s_normal",
+      "flop": "Js8s3s",
+      "tree": "normal",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Js8s3s_normal_4x4.tsv",
+      "expected_policy_sha256": "d60dc21ab400620f1ea8d0507ac2d8be0a3171098fb854686e8a5e2c9a0452fc"
+    },
+    "Js8s3s_normal_6x6": {
+      "case_id": "Js8s3s_normal",
+      "flop": "Js8s3s",
+      "tree": "normal",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Js8s3s_normal_6x6.tsv",
+      "expected_policy_sha256": "d4f65f9fb645acfa1cdab188b07f57163748fcea02600522a71911fdc59c75c5"
+    },
+    "Js8s3s_wide_1x1": {
+      "case_id": "Js8s3s_wide",
+      "flop": "Js8s3s",
+      "tree": "wide",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Js8s3s_wide_1x1.tsv",
+      "expected_policy_sha256": "36c05da61abc820fd06307177b70925e72de73d53b21bb1dd413291dc27a8462"
+    },
+    "Js8s3s_wide_2x2": {
+      "case_id": "Js8s3s_wide",
+      "flop": "Js8s3s",
+      "tree": "wide",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Js8s3s_wide_2x2.tsv",
+      "expected_policy_sha256": "ad48ed88edf21d31da57773a49f85dad9a693018b0c0b0d98dc40acbd16aaade"
+    },
+    "Js8s3s_wide_4x4": {
+      "case_id": "Js8s3s_wide",
+      "flop": "Js8s3s",
+      "tree": "wide",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Js8s3s_wide_4x4.tsv",
+      "expected_policy_sha256": "83e3a39b3cea07d13fda9b6591d02e09a18f03d3fdb982299d108da333047bde"
+    },
+    "Js8s3s_wide_6x6": {
+      "case_id": "Js8s3s_wide",
+      "flop": "Js8s3s",
+      "tree": "wide",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Js8s3s_wide_6x6.tsv",
+      "expected_policy_sha256": "b224b4a472a1913d6ac1ef7f03b01b13686e28438eea348c45965a79aa3ebad5"
+    },
+    "Js8s3s_forced_ip_checks_1x1": {
+      "case_id": "Js8s3s_forced_ip_checks",
+      "flop": "Js8s3s",
+      "tree": "forced_ip_checks",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Js8s3s_forced_ip_checks_1x1.tsv",
+      "expected_policy_sha256": "6afbb03a215ad58a4aece9d8755ddc26d4bbbf2b0fa1a86e4fb39d39bec18ab9"
+    },
+    "Js8s3s_forced_ip_checks_2x2": {
+      "case_id": "Js8s3s_forced_ip_checks",
+      "flop": "Js8s3s",
+      "tree": "forced_ip_checks",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Js8s3s_forced_ip_checks_2x2.tsv",
+      "expected_policy_sha256": "a60266e68d00dc78b99b5a0a71c66387e875dbf5e418217347b466fcfd5ed788"
+    },
+    "Js8s3s_forced_ip_checks_4x4": {
+      "case_id": "Js8s3s_forced_ip_checks",
+      "flop": "Js8s3s",
+      "tree": "forced_ip_checks",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Js8s3s_forced_ip_checks_4x4.tsv",
+      "expected_policy_sha256": "09ec0b3a44c1fef598b0e20f7f97832cc8e4d64527237f48160b0ac78e33fc40"
+    },
+    "Js8s3s_forced_ip_checks_6x6": {
+      "case_id": "Js8s3s_forced_ip_checks",
+      "flop": "Js8s3s",
+      "tree": "forced_ip_checks",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Js8s3s_forced_ip_checks_6x6.tsv",
+      "expected_policy_sha256": "42279dfd00b965311e6aacb9fa20eb68ac7f09cfde48caa27e791c9a5dd961fd"
+    },
+    "Js8s3s_forced_ip_bets_1x1": {
+      "case_id": "Js8s3s_forced_ip_bets",
+      "flop": "Js8s3s",
+      "tree": "forced_ip_bets",
+      "model": "1x1",
+      "iterations": 60,
+      "config": "configs/speed/Js8s3s_forced_ip_bets_1x1.tsv",
+      "expected_policy_sha256": "c31506c0e43e119f2c609f2c5afca2ef8d46718520474d0478e7b1896db2e541"
+    },
+    "Js8s3s_forced_ip_bets_2x2": {
+      "case_id": "Js8s3s_forced_ip_bets",
+      "flop": "Js8s3s",
+      "tree": "forced_ip_bets",
+      "model": "2x2",
+      "iterations": 120,
+      "config": "configs/speed/Js8s3s_forced_ip_bets_2x2.tsv",
+      "expected_policy_sha256": "04d950a9f13d987211f7e4571abdc814a8b9b0e95d2f10681462900b5b71dea4"
+    },
+    "Js8s3s_forced_ip_bets_4x4": {
+      "case_id": "Js8s3s_forced_ip_bets",
+      "flop": "Js8s3s",
+      "tree": "forced_ip_bets",
+      "model": "4x4",
+      "iterations": 150,
+      "config": "configs/speed/Js8s3s_forced_ip_bets_4x4.tsv",
+      "expected_policy_sha256": "b476bcce07a1879fae7a0b3c5e4e413e1e61f18f1e83bded0041cc67e544b26f"
+    },
+    "Js8s3s_forced_ip_bets_6x6": {
+      "case_id": "Js8s3s_forced_ip_bets",
+      "flop": "Js8s3s",
+      "tree": "forced_ip_bets",
+      "model": "6x6",
+      "iterations": 200,
+      "config": "configs/speed/Js8s3s_forced_ip_bets_6x6.tsv",
+      "expected_policy_sha256": "c07e30e6a60926562b4e295149e044dfe1003289f503274564ee142195b80be9"
+    },
+    "Js8s3s_SRP_deep_1x1": {
+      "case_id": "Js8s3s_SRP_deep",
+      "flop": "Js8s3s",
+      "tree": "SRP_deep",
+      "model": "1x1",
+      "iterations": 120,
+      "config": "configs/speed/Js8s3s_SRP_deep_1x1.tsv",
+      "expected_policy_sha256": "5209cc6d41e537d825e934a585d173693bc2fee76cd3e818e2c107977f4a0e30"
+    },
+    "Js8s3s_SRP_deep_2x2": {
+      "case_id": "Js8s3s_SRP_deep",
+      "flop": "Js8s3s",
+      "tree": "SRP_deep",
+      "model": "2x2",
+      "iterations": 200,
+      "config": "configs/speed/Js8s3s_SRP_deep_2x2.tsv",
+      "expected_policy_sha256": "58a5e36683e38476e9b1355481221bf35e60a5bf2a78bd7953fcd766028ede92"
+    },
+    "Js8s3s_SRP_deep_4x4": {
+      "case_id": "Js8s3s_SRP_deep",
+      "flop": "Js8s3s",
+      "tree": "SRP_deep",
+      "model": "4x4",
+      "iterations": 250,
+      "config": "configs/speed/Js8s3s_SRP_deep_4x4.tsv",
+      "expected_policy_sha256": "f1fbcb36c66356c517a94f77e0b5debbdbac9b9dd6453cd17e9422aa47a39784"
+    },
+    "Js8s3s_SRP_deep_6x6": {
+      "case_id": "Js8s3s_SRP_deep",
+      "flop": "Js8s3s",
+      "tree": "SRP_deep",
+      "model": "6x6",
+      "iterations": 300,
+      "config": "configs/speed/Js8s3s_SRP_deep_6x6.tsv",
+      "expected_policy_sha256": "acc5f0ba38ca4daf4eae7d60e2e60e8d9eb8310acf33149dbb87a8e027f10d9b"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "interface_version": 1,
+  "context": "pot_fraction",
+  "uses_current_reaches": true,
+  "sum_cfvs_before_transfer": false,
+  "basis_count": 2,
+  "output": "complete_river_sum",
+  "target_scale": "basis_cfv_rms",
+  "rms_denominator": "supported_hands_times_basis_count",
+  "equity_features": false
+}

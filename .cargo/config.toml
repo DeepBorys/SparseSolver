@@ -1,0 +1,4 @@
+# Local CPU binaries target the build host. Set RUSTFLAGS explicitly when
+# cross-building or distributing to CPUs with a different instruction set.
+[target.x86_64-unknown-linux-gnu]
+rustflags = ["-C", "target-cpu=native"]

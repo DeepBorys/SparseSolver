@@ -1,0 +1,134 @@
+{
+  "case": "QsJh2h normal2x2",
+  "iterations": 120,
+  "measured_host": "C8a.4xlarge",
+  "workers": 16,
+  "comparable_machine": null,
+  "solve_seconds": 0.057142404,
+  "peak_ram_MiB": 157.58984375,
+  "sample_seconds": [
+    0.057783719,
+    0.057142404,
+    0.057134644
+  ],
+  "quality": {
+    "oop": {
+      "loss_pct_pot": 0.22352854388889418,
+      "residual_pct": 0.0155788,
+      "strategy_sha256": "6297842d9fe3caaa6f67193e685c28ffa3c4b53f8e57ee6258ba9b7ce9519557",
+      "reference_root_sha256": "7eadabcbb5ec3cc68aee93d3db03c96c73e689847e7124cd0943d7d378fb488e",
+      "policy_iterations": 120
+    },
+    "ip": {
+      "loss_pct_pot": 0.17594231500000193,
+      "residual_pct": 0.016653538,
+      "strategy_sha256": "6297842d9fe3caaa6f67193e685c28ffa3c4b53f8e57ee6258ba9b7ce9519557",
+      "reference_root_sha256": "7eadabcbb5ec3cc68aee93d3db03c96c73e689847e7124cd0943d7d378fb488e",
+      "policy_iterations": 120
+    }
+  },
+  "mean_locked_BR_pct_pot": 0.19973542944444805,
+  "price_quote": {
+    "instanceType": "c8a.4xlarge",
+    "region": "us-east-1",
+    "azId": "use1-az5",
+    "azName": "us-east-1f",
+    "price": 0.2521,
+    "savingsPercent": 70.76,
+    "updatedAt": "2026-11-09T18:04:04.89396Z"
+  },
+  "verification": "AWS per-hand strategy AND aggregate SHA256 directly match canonical120iteration policy; both directionalBRreceipts bind same strategySHA. Original imported home-match flag was unset; current direct match independently verified.",
+  "source_file": "benchmarks/website_aws_measurement_history_v1/aws_reference_rust1.99.1_20261105_014945_24341/56b97391864b98fd28054909d8780571529dd3581d1cdff934aa76f20d3aff5d/RESULTS.json",
+  "price_source": "https://compute.doit.com/api/v1/spot/instances/us-east-1/c8a.4xlarge",
+  "scaling": [
+    {
+      "threads": 1,
+      "solve_seconds": 0.360802867,
+      "peak_ram_MiB": 155.40234375
+    },
+    {
+      "threads": 2,
+      "solve_seconds": 0.221530787,
+      "peak_ram_MiB": 155.609375
+    },
+    {
+      "threads": 4,
+      "solve_seconds": 0.127425741,
+      "peak_ram_MiB": 155.8359375
+    },
+    {
+      "threads": 8,
+      "solve_seconds": 0.080666243,
+      "peak_ram_MiB": 156.58203125
+    },
+    {
+      "threads": 16,
+      "solve_seconds": 0.057142404,
+      "peak_ram_MiB": 157.58984375
+    }
+  ],
+  "desktop_example": {
+    "cpu": "AMD Ryzen 7 9700X",
+    "cores": 8,
+    "approximate_CPU_budget_USD": 300,
+    "timing": "Not benchmarked in this record",
+    "hardware_threads": 16
+  },
+  "network_MACs": {
+    "scope": "dense layer MACs; both players; actual QJ2 range-specialized dimensions",
+    "turn": {
+      "OOP": 193152,
+      "IP": 248064,
+      "combined": 441216
+    },
+    "river3d": {
+      "OOP": 96256,
+      "IP": 123456,
+      "combined": 219712
+    },
+    "river4h": {
+      "OOP": 96256,
+      "IP": 123392,
+      "combined": 219648
+    },
+    "DeepStack": {
+      "input_features": 2001,
+      "hidden_width": 500,
+      "hidden_layers": 7,
+      "output_features": 2000,
+      "MACs": 3500500,
+      "formula": "2001*500 + 6*500*500 + 500*2000",
+      "source": "https://arxiv.org/html/1701.01724",
+      "physical_turn_boards": 49,
+      "MACs_49_turn_boards": 171524500,
+      "chance_evaluation_source": "https://github.com/happypepper/DeepHoldem/blob/master/Source/Nn/next_round_value.lua"
+    },
+    "source_log": "benchmarks/website_quality_40refs_240policies_480BR_20261104_v1/policies/QsJh2h/normal/2x2/i120/solve.log"
+  },
+  "chance_pairs": {
+    "full_physical": 2352,
+    "sampled": 4,
+    "ratio": 588,
+    "scope": "explicit turn-river pairs, not total tree nodes or RAM ratio"
+  },
+  "medium_comparison": {
+    "instance": "c8a.medium",
+    "vcpu": 1,
+    "RAM_GiB": 2,
+    "solve_seconds": 0.360802867,
+    "peak_ram_MiB": 155.40234375,
+    "measurement_host": "c8a.4xlarge",
+    "measurement_workers": 1,
+    "separate_medium_measurement": false,
+    "price_quote": {
+      "instanceType": "c8a.medium",
+      "region": "us-east-1",
+      "azId": "use1-az5",
+      "azName": "us-east-1f",
+      "price": 0.0118,
+      "savingsPercent": 78.1,
+      "updatedAt": "2026-11-09T20:07:30.032208Z"
+    },
+    "price_source": "https://compute.doit.com/api/v1/spot/instances/us-east-1/c8a.medium"
+  }
+}

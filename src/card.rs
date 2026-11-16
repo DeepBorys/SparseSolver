@@ -13,6 +13,186 @@ use bincode::{Decode, Encode};
 ///   - `suit`: club => `0`, diamond => `1`, heart => `2`, spade => `3`
 pub type Card = u8;
 
+/// Exact seven-card showdown ranks for every unordered two-card runout and
+/// private hand on a fixed flop. Illegal hand/runout combinations use
+/// `u16::MAX`. Rows are ordered lexicographically by `(turn, river)` with
+/// `turn < river`; columns follow `hands`.
+pub fn flop_runout_showdown_strengths(
+    flop: [Card; 3],
+    hands: &[(Card, Card)],
+) -> (Vec<(Card, Card)>, Vec<u16>) {
+    let flop_mask = flop.iter().fold(0u64, |mask, &card| mask | (1u64 << card));
+    let mut runouts = Vec::new();
+    for turn in 0..52u8 {
+        if flop_mask & (1u64 << turn) != 0 {
+            continue;
+        }
+        for river in turn + 1..52u8 {
+            if flop_mask & (1u64 << river) == 0 {
+                runouts.push((turn, river));
+            }
+        }
+    }
+    let mut strengths = vec![u16::MAX; runouts.len() * hands.len()];
+    for (runout_index, &(turn, river)) in runouts.iter().enumerate() {
+        for (hand_index, &(c1, c2)) in hands.iter().enumerate() {
+            if c1 == c2
+                || flop.contains(&c1)
+                || flop.contains(&c2)
+                || c1 == turn
+                || c2 == turn
+                || c1 == river
+                || c2 == river
+            {
+                continue;
+            }
+            let mut hand = Hand::new();
+            for &card in &flop {
+                hand = hand.add_card(card as usize);
+            }
+            let rank = hand
+                .add_card(turn as usize)
+                .add_card(river as usize)
+                .add_card(c1 as usize)
+                .add_card(c2 as usize)
+                .evaluate();
+            strengths[runout_index * hands.len() + hand_index] = rank;
+        }
+    }
+    (runouts, strengths)
+}
+
+/// Deterministic fixed-board turn-strength features in `[turn][hand][feature]`
+/// order. Illegal turn/hand combinations are all zero. Features are: legality,
+/// six-card made-hand category, six-card rank, within-turn rank percentile,
+/// mean and standard deviation of final rank over legal rivers, and the
+/// fraction of rivers that improve the ordinal rank. Final-rank statistics use
+/// only card enumeration, never CFVs or an opponent range.
+pub fn static_turn_strength_features(
+    flop: [Card; 3],
+    turns: &[Card],
+    hands: &[(Card, Card)],
+) -> Vec<f32> {
+    const FEATURES: usize = 7;
+    const MAX_RANK: f32 = 7461.0;
+    const KICKER_SCALE: f32 = (1u32 << 26) as f32;
+    let mut output = vec![0.0; turns.len() * hands.len() * FEATURES];
+    for (turn_index, &turn) in turns.iter().enumerate() {
+        let mut ranks = Vec::new();
+        for &(c1, c2) in hands {
+            if !flop.contains(&turn)
+                && c1 != c2
+                && !flop.contains(&c1)
+                && !flop.contains(&c2)
+                && c1 != turn
+                && c2 != turn
+            {
+                let mut value = Hand::new();
+                for &card in &flop {
+                    value = value.add_card(card as usize);
+                }
+                value = value
+                    .add_card(turn as usize)
+                    .add_card(c1 as usize)
+                    .add_card(c2 as usize);
+                ranks.push(value.strength_key());
+            }
+        }
+        ranks.sort_unstable();
+        for (hand_index, &(c1, c2)) in hands.iter().enumerate() {
+            if flop.contains(&turn)
+                || c1 == c2
+                || flop.contains(&c1)
+                || flop.contains(&c2)
+                || c1 == turn
+                || c2 == turn
+            {
+                continue;
+            }
+            let mut value = Hand::new();
+            for &card in &flop {
+                value = value.add_card(card as usize);
+            }
+            value = value
+                .add_card(turn as usize)
+                .add_card(c1 as usize)
+                .add_card(c2 as usize);
+            let current = value.strength_key();
+            let percentile =
+                ranks.partition_point(|&rank| rank < current) as f32 / ranks.len().max(1) as f32;
+            let mut sum = 0.0f64;
+            let mut square = 0.0f64;
+            let mut improved = 0usize;
+            let mut count = 0usize;
+            for river in 0..52u8 {
+                if flop.contains(&river) || river == turn || river == c1 || river == c2 {
+                    continue;
+                }
+                let river_hand = value.add_card(river as usize);
+                let rank = river_hand.evaluate();
+                sum += rank as f64;
+                square += (rank as f64) * (rank as f64);
+                improved += usize::from(river_hand.strength_key() > current);
+                count += 1;
+            }
+            let mean = sum / count as f64;
+            let variance = (square / count as f64 - mean * mean).max(0.0);
+            let start = (turn_index * hands.len() + hand_index) * FEATURES;
+            output[start..start + FEATURES].copy_from_slice(&[
+                1.0,
+                value.category() as f32 / 8.0,
+                (current & ((1 << 26) - 1)) as f32 / KICKER_SCALE,
+                percentile,
+                mean as f32 / MAX_RANK,
+                variance.sqrt() as f32 / MAX_RANK,
+                improved as f32 / count as f32,
+            ]);
+        }
+    }
+    output
+}
+
+/// Exact final-hand category and ordinal strength for each
+/// `[river][canonical hand]`. Illegal river/hand combinations are `(u8::MAX, 0)`.
+/// This deliberately exposes the solver's own evaluator for offline diagnostics.
+pub fn static_river_hand_strengths(
+    flop: [Card; 3],
+    turn: Card,
+    rivers: &[Card],
+    hands: &[(Card, Card)],
+) -> Vec<(u8, u16)> {
+    let mut output = Vec::with_capacity(rivers.len() * hands.len());
+    for &river in rivers {
+        for &(c1, c2) in hands {
+            if flop.contains(&turn)
+                || flop.contains(&river)
+                || river == turn
+                || c1 == c2
+                || flop.contains(&c1)
+                || flop.contains(&c2)
+                || c1 == turn
+                || c2 == turn
+                || c1 == river
+                || c2 == river
+            {
+                output.push((u8::MAX, 0));
+                continue;
+            }
+            let mut value = Hand::new();
+            for &card in &flop {
+                value = value.add_card(card as usize);
+            }
+            value = value
+                .add_card(turn as usize)
+                .add_card(river as usize)
+                .add_card(c1 as usize)
+                .add_card(c2 as usize);
+            output.push((value.category(), value.evaluate()));
+        }
+    }
+    output
+}
+
 /// Constant representing that the card is not yet dealt.
 pub const NOT_DEALT: Card = Card::MAX;
 
@@ -107,6 +287,14 @@ impl CardConfig {
         &self,
         private_cards: &PrivateCards,
     ) -> (Indices, Vec<Indices>, Vec<Indices>) {
+        self.valid_indices_for_runouts(private_cards, None)
+    }
+
+    pub(crate) fn valid_indices_for_runouts(
+        &self,
+        private_cards: &PrivateCards,
+        selected: Option<(&[bool], &[bool])>,
+    ) -> (Indices, Vec<Indices>, Vec<Indices>) {
         let ret_flop = if self.turn == NOT_DEALT {
             [
                 (0..private_cards[0].len() as u16).collect(),
@@ -121,6 +309,7 @@ impl CardConfig {
             if !self.flop.contains(&board)
                 && (self.turn == NOT_DEALT || self.turn == board)
                 && self.river == NOT_DEALT
+                && selected.map_or(true, |(turns, _)| turns[board as usize])
             {
                 ret_turn[board as usize] =
                     Self::valid_indices_internal(private_cards, board, NOT_DEALT);
@@ -134,6 +323,7 @@ impl CardConfig {
                     && !self.flop.contains(&board2)
                     && (self.turn == NOT_DEALT || board1 == self.turn || board2 == self.turn)
                     && (self.river == NOT_DEALT || board1 == self.river || board2 == self.river)
+                    && selected.map_or(true, |(_, pairs)| pairs[card_pair_to_index(board1, board2)])
                 {
                     let index = card_pair_to_index(board1, board2);
                     ret_river[index] = Self::valid_indices_internal(private_cards, board1, board2);
@@ -184,6 +374,14 @@ impl CardConfig {
         &self,
         private_cards: &PrivateCards,
     ) -> Vec<[Vec<StrengthItem>; 2]> {
+        self.hand_strength_for_runouts(private_cards, None)
+    }
+
+    pub(crate) fn hand_strength_for_runouts(
+        &self,
+        private_cards: &PrivateCards,
+        selected: Option<&[bool]>,
+    ) -> Vec<[Vec<StrengthItem>; 2]> {
         let mut ret = vec![Default::default(); 52 * 51 / 2];
 
         let mut board = Hand::new();
@@ -197,8 +395,34 @@ impl CardConfig {
                     && !board.contains(board2 as usize)
                     && (self.turn == NOT_DEALT || board1 == self.turn || board2 == self.turn)
                     && (self.river == NOT_DEALT || board1 == self.river || board2 == self.river)
+                    && selected.map_or(true, |pairs| pairs[card_pair_to_index(board1, board2)])
                 {
                     let board = board.add_card(board1 as usize).add_card(board2 as usize);
+                    // Opt-in resident query path: evaluate each selected board/hand
+                    // once, independently of range support and betting geometry.
+                    let cached_ranks = if std::env::var("SPARSE_PRUNED_CARD_TABLE_CACHE").as_deref() == Ok("1") {
+                        use std::collections::HashMap;
+                        use std::sync::{Arc, Mutex, OnceLock};
+                        type Key = ([Card; 3], Card, Card);
+                        static CACHE: OnceLock<Mutex<HashMap<Key, Arc<Vec<u16>>>>> = OnceLock::new();
+                        let cache = CACHE.get_or_init(|| Mutex::new(HashMap::new()));
+                        let key = (self.flop, board1, board2);
+                        let found = cache.lock().unwrap().get(&key).cloned();
+                        Some(found.unwrap_or_else(|| {
+                            let mut ranks = vec![0u16; 1326];
+                            for c1 in 0..52u8 {
+                                for c2 in c1 + 1..52u8 {
+                                    if !board.contains(c1 as usize) && !board.contains(c2 as usize) {
+                                        ranks[card_pair_to_index(c1, c2)] =
+                                            board.add_card(c1 as usize).add_card(c2 as usize).evaluate() + 1;
+                                    }
+                                }
+                            }
+                            let ranks = Arc::new(ranks);
+                            cache.lock().unwrap().insert(key, ranks.clone());
+                            ranks
+                        }))
+                    } else { None };
                     let mut strength = [
                         Vec::with_capacity(private_cards[0].len() + 2),
                         Vec::with_capacity(private_cards[1].len() + 2),
@@ -224,7 +448,10 @@ impl CardConfig {
                                     } else {
                                         let hand = board.add_card(c1).add_card(c2);
                                         Some(StrengthItem {
-                                            strength: hand.evaluate() + 1, // +1 to avoid 0
+                                            strength: cached_ranks.as_ref().map_or_else(
+                                                || hand.evaluate() + 1,
+                                                |ranks| ranks[card_pair_to_index(c1 as Card, c2 as Card)],
+                                            ), // +1 to avoid 0
                                             index: index as u16,
                                         })
                                     }
@@ -447,5 +674,21 @@ mod tests {
                 k += 1;
             }
         }
+    }
+
+    #[test]
+    fn test_static_river_hand_strengths_marks_blockers_and_uses_evaluator() {
+        let flop = flop_from_str("Td9d6h").unwrap();
+        let turn = card_from_str("3c").unwrap();
+        let river = card_from_str("2c").unwrap();
+        let legal = (card_from_str("8c").unwrap(), card_from_str("7c").unwrap());
+        let blocked = (river, card_from_str("As").unwrap());
+        let result = static_river_hand_strengths(flop, turn, &[river], &[legal, blocked]);
+        let mut direct = Hand::new();
+        for card in flop.into_iter().chain([turn, river, legal.0, legal.1]) {
+            direct = direct.add_card(card as usize);
+        }
+        assert_eq!(result[0], (direct.category(), direct.evaluate()));
+        assert_eq!(result[1], (u8::MAX, 0));
     }
 }

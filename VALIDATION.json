@@ -1,0 +1,154 @@
+{
+  "environment": "Local Linux functional validation with Rust1.88 and CPU Torch2.9 headers/libraries; not an EC2 timing claim",
+  "build_neural_examples": "pass",
+  "build_classical_without_neural": "pass",
+  "original_wataru_basic_assertions": "pass",
+  "quick_models": [
+    {
+      "model": "1x1",
+      "iterations": 60,
+      "median_ms": 11.159777,
+      "peak_MiB": 144.52734375
+    },
+    {
+      "model": "2x2",
+      "iterations": 120,
+      "median_ms": 50.126441,
+      "peak_MiB": 152.30078125
+    },
+    {
+      "model": "4x4",
+      "iterations": 150,
+      "median_ms": 185.795527,
+      "peak_MiB": 178.03515625
+    },
+    {
+      "model": "6x6",
+      "iterations": 200,
+      "median_ms": 537.9084720000001,
+      "peak_MiB": 224.03515625
+    }
+  ],
+  "all4_flop_policies_match_archived_native_policies_max_delta_below": 5e-08,
+  "staged_full_checkpoints": [
+    0,
+    10,
+    20
+  ],
+  "staged_signed_values_verified": 202870538,
+  "assembly": {
+    "seed_model": "2x2",
+    "seed_iterations": 120,
+    "refine_iterations": 100,
+    "seed_solve_ms": 90.96455300000001,
+    "transfer_ms": 204.376221,
+    "frontiers": 343,
+    "refine_all_ms": 11964.528427000005,
+    "full_tree_exploitability_pct_pot": 1.300190806388855,
+    "flop_frozen": true,
+    "full49x48": true
+  },
+  "assembly_flop_strategy_unchanged": true,
+  "full_Ubuntu_setup_on_EC2": "pending user instance; system installation not run locally",
+  "upstream_kuhn_leduc_tests": "3 passed",
+  "package_scope": "Five examples, runtime solver/inference, QJ2 model bank only; no training/data-generation programs",
+  "static_regression": {
+    "fixture_total_KiB": 432.9,
+    "quick_all4_models": "pass; all repetitions matched 11024 strategy entries per model with zero observed delta",
+    "staged_0_10_20": "pass",
+    "default_assembly": "pass;1.300190806%pot;343frontiers;flop unchanged",
+    "probability_absolute_tolerance": 0.0001,
+    "exploitability_absolute_tolerance_pct_pot": 0.005,
+    "wall_clock_assertions": false,
+    "locked_BR_loss_recomputed": false,
+    "checker_unit_tests": "4 passed: one matching policy and three invalid cases rejected"
+  },
+  "speed40": {
+    "configurations": 160,
+    "situations": 40,
+    "validation_runs_per_configuration": 1,
+    "validation_warmups": 0,
+    "default_repeats": 3,
+    "default_warmups": 1,
+    "all_configurations_completed": true,
+    "archived_policy_probability_entries_compared": 2589120,
+    "maximum_probability_delta": 2.980199997892896e-08,
+    "resume_same_signature": "pass;all160 reused without solving",
+    "resume_changed_workers": "rejected",
+    "targeted_default_warmup_and_repeats": "pass;QJ2 normal2x2",
+    "unit_tests": 8,
+    "model_archive_bytes": 1069369961,
+    "model_archive_sha256": "83baa5381bd0d07824bfb05de0bd0e31b1c551d9ac949b8479b512e710838b8c",
+    "all272_models_verified_and_hydrated": true,
+    "hosting": "Archive prepared locally; GitHub Release upload requires authenticated browser/API",
+    "scope": "Local functional validation, not clean AWS speed claims"
+  },
+  "automatic_workers": {
+    "default": "nproc/affinity; independent of OMP/BLAS thread limits",
+    "four_CPU_affinity_quick": "pass;selected4;static policy checks passed",
+    "four_CPU_affinity_speed_sweep": "pass;selected4",
+    "four_CPU_affinity_staged": "pass;selected4;full0/10 checks passed",
+    "unit_tests": 12,
+    "explicit_override": "supported up to available CPUs",
+    "README": "website headline,screenshot,eight bullets,four-row comparison and short CLI quickstart;local website links",
+    "comparison_table_quality_values": "match website street-lock JSON",
+    "timing_label": "seed plus one continuation;35.227s full assembly validation context retained"
+  },
+  "model_availability": {
+    "pre_allocation_assertions": "pass for1x1,2x2,4x4,6x6",
+    "unsupported_flop_no_fallback": "pass;AsKhQd rejected despite installed other banks",
+    "incomplete_river_bank": "rejected",
+    "classical_without_NN": "passes model preflight without assets",
+    "model_preflight_unit_tests": 3,
+    "other_python_unit_tests": 12
+  },
+  "editable_examples": {
+    "date": "2026-11-16",
+    "original_basic_rs": "unchanged T96/Q turn example",
+    "qj2_examples": [
+      "qj2_3bet_classical",
+      "qj2_3bet_sparse",
+      "qj2_3bet_warm_start",
+      "qj2_3bet_refine"
+    ],
+    "classical_sparse_source_difference": "one model setting; all game inputs inline",
+    "all4_quick_policy_checks": "exact match; 11024 entries per model",
+    "warm_start_checkpoints_0_10_20": "match existing static fixtures",
+    "complete_policy_full_exploitability_pct_pot": 1.300190806388855,
+    "complete_policy_static_check": "pass;343 frontiers;flop unchanged",
+    "copy_edit_only_flop": "As9h4d2x2/120;10800 CSV entries identical to batch driver",
+    "selected_frontiers": "1x1/50 ->2x2/25;two disjoint Action histories;10 refinement iterations each;flop average fingerprint unchanged",
+    "neural_examples_build": "pass",
+    "classical_without_neural_check": "pass",
+    "python_tests": 12,
+    "missing_model_tests": 3,
+    "timings": "Functional checks only; no new published speed claim"
+  },
+  "strategy_demonstrations": {
+    "date": "2026-11-16",
+    "two_size_examples": [
+      "qj2_3bet_twosize_classical",
+      "qj2_3bet_twosize_fast",
+      "qj2_3bet_twosize_deep"
+    ],
+    "tree": "QJ2 pot180 stack910;25/75,33/100,50/150;45percent raises;normal donk/all-in/merge rules",
+    "fast_schedule": "1x1/50 ->2x2/25;selected check/bet45/call/3d unsafe100",
+    "deep_schedule": "2x2/100 ->6x6/100;selected check/bet45/call/3d unsafe300",
+    "published_seed_parity": {
+      "entries_per_schedule": 17225,
+      "fast_max_probability_delta": 2.979699997851526e-08,
+      "deep_max_probability_delta": 2.9783999933030714e-08
+    },
+    "two_frontier_example": "prints both7c and8d strategies;10 iterations each functional check",
+    "strategy_output": "13x13 console matrices for each action;unrounded per-combo CSV;board-legal positive and zero-reach hands",
+    "locks_and_full_BR": "not run in strategy demonstrations",
+    "timing_scope": "CFR only; transfer printed separately; console/CSV output excluded; functional runs are not clean benchmark speed claims",
+    "python_tests": 12,
+    "neural_examples_build": "pass",
+    "classical_checkpoints_completed": [
+      89,
+      160
+    ],
+    "node_strategy_CSVs_validated": 11
+  }
+}

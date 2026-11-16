@@ -3,7 +3,19 @@ use crate::interface::*;
 use std::ptr;
 use std::slice;
 
+// Timing experiment only. Production keeps river action recursion serial.
+static PARALLEL_RIVER_EXPERIMENT: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
+
+// Opt-in task-granularity experiment. Chance frontiers keep their existing
+// ordered reductions; only betting-action task creation is restricted.
+static SUBTREE_SCHEDULING_EXPERIMENT: std::sync::OnceLock<u8> = std::sync::OnceLock::new();
+
 impl GameNode for PostFlopNode {
+    #[inline]
+    fn id(&self) -> u64 {
+        self.id
+    }
+
     #[inline]
     fn is_terminal(&self) -> bool {
         self.player & PLAYER_TERMINAL_FLAG != 0
@@ -32,6 +44,25 @@ impl GameNode for PostFlopNode {
     #[inline]
     fn num_actions(&self) -> usize {
         self.num_children as usize
+    }
+
+    #[inline]
+    fn board_turn(&self) -> u8 {
+        self.turn
+    }
+
+    #[inline]
+    fn board_river(&self) -> u8 { self.river }
+
+    fn chance_cards(&self) -> Vec<u8> {
+        assert!(self.is_chance());
+        self.children()
+            .iter()
+            .map(|child| match child.lock().prev_action {
+                Action::Chance(card) => card,
+                _ => unreachable!(),
+            })
+            .collect()
     }
 
     #[inline]
@@ -200,7 +231,20 @@ impl GameNode for PostFlopNode {
 
     #[inline]
     fn enable_parallelization(&self) -> bool {
-        self.river == NOT_DEALT
+        let scheduling = *SUBTREE_SCHEDULING_EXPERIMENT.get_or_init(|| {
+            match std::env::var("PFS_SUBTREE_SCHEDULING_EXPERIMENT").as_deref() {
+                Err(_) | Ok("default") => 0,
+                Ok("chance_only") => 1,
+                Ok("flop_and_chance") => 2,
+                Ok(other) => panic!("Unknown PFS_SUBTREE_SCHEDULING_EXPERIMENT={other}"),
+            }
+        });
+        if scheduling != 0 {
+            return self.is_chance() || (scheduling == 2 && self.turn == NOT_DEALT);
+        }
+        self.river == NOT_DEALT || *PARALLEL_RIVER_EXPERIMENT.get_or_init(|| {
+            std::env::var("PFS_PARALLEL_RIVER_EXPERIMENT").as_deref() == Ok("1")
+        })
     }
 }
 
@@ -208,6 +252,7 @@ impl Default for PostFlopNode {
     #[inline]
     fn default() -> Self {
         Self {
+            id: 0,
             prev_action: Action::None,
             player: PLAYER_OOP,
             turn: NOT_DEALT,

@@ -10,6 +10,141 @@ fn decode_signed_slice(slice: &[i16], scale: f32) -> Vec<f32> {
     slice.iter().map(|&x| x as f32 * decoder).collect()
 }
 
+#[cfg(test)]
+mod analysis_mass_tests {
+    use super::*;
+
+    #[test]
+    fn live_root_ev_trace_preserves_cfr_storage_and_matches_finalized_values() {
+        fn storage(node:&PostFlopNode, out:&mut Vec<u32>) {
+            if !node.is_terminal() && !node.is_chance() {
+                out.extend(node.regrets().iter().chain(node.strategy()).map(|x|x.to_bits()));
+            }
+            for a in 0..node.num_actions() {storage(&node.play(a),out);}
+        }
+        for iterations in [0,3,65] {
+            let mut g=game();
+            for i in 0..iterations {crate::solve_step(&g,i);}
+            g.back_to_root();g.cache_normalized_weights();
+            let mut before=Vec::new();storage(&g.root(),&mut before);
+            let values:[Vec<f32>;2]=std::array::from_fn(|p|g.diagnostic_live_root_expected_values(p,iterations));
+            let mut after=Vec::new();storage(&g.root(),&mut after);
+            assert_eq!(before,after,"root trace modified live CFR storage");
+            assert!(!g.is_solved());
+            crate::finalize_with_neural_frontiers(&mut g,iterations);
+            g.back_to_root();g.cache_normalized_weights();
+            for p in 0..2 {
+                for (actual,expected) in values[p].iter().zip(g.expected_values(p)) {
+                    assert!((*actual-expected).abs()<0.0001,"live/finalized root EV mismatch");
+                }
+            }
+        }
+    }
+
+    fn game() -> PostFlopGame {
+        let cards = CardConfig {
+            range: ["AA,KK,AKs,A9s".parse().unwrap(), "AA,KK,AKs,A9s".parse().unwrap()],
+            flop: crate::flop_from_str("QsJh2h").unwrap(),
+            turn: crate::card_from_str("4h").unwrap(),
+            river: crate::card_from_str("Th").unwrap(),
+        };
+        let tree = TreeConfig { initial_state: BoardState::River, starting_pot: 60,
+            effective_stack: 100, river_bet_sizes: [("50%", "").try_into().unwrap(), ("50%", "").try_into().unwrap()],
+            ..Default::default() };
+        let mut g = PostFlopGame::with_config(cards, ActionTree::new(tree).unwrap()).unwrap();
+        g.allocate_memory(false);
+        g
+    }
+
+    #[test]
+    fn analysis_mass_keeps_tiny_compatible_reach_and_rejects_phantom_reach() {
+        let mut g = game();
+        let h = 0;
+        let (a, b) = g.private_cards[0][h];
+        let blocked = g.private_cards[1].iter().position(|&(c, d)| [a, b].contains(&c) || [a, b].contains(&d)).unwrap();
+        let legal = g.private_cards[1].iter().position(|&(c, d)| ![a, b].contains(&c) && ![a, b].contains(&d)).unwrap();
+        for tiny in [1e-12f32, 1e-25, 1e-40, 0.] {
+            g.weights[0].fill(1.);
+            g.weights[1].fill(0.);
+            g.weights[1][blocked] = 1.;
+            g.weights[1][legal] = tiny;
+            g.is_normalized_weight_cached = false;
+            g.cache_normalized_weights();
+            let before = g.normalized_weights.clone();
+            let actual = g.compatible_weights_for_analysis(0);
+            assert_eq!(actual[h], tiny as f64);
+            for (i, &(x, y)) in g.private_cards[0].iter().enumerate() {
+                let expected: f64 = g.private_cards[1].iter().zip(&g.weights[1])
+                    .filter(|((c, d), _)| ![x, y].contains(c) && ![x, y].contains(d))
+                    .map(|(_, &w)| w as f64).sum();
+                assert!((actual[i] - expected).abs() <= expected * 1e-12);
+            }
+            let eq = g.equity_for_analysis(0);
+            if tiny > 0. { assert_eq!(eq[h], g.direct_equity_for_analysis(0, h)); }
+            assert_eq!(g.normalized_weights, before, "analysis changed solver reach buffers");
+        }
+    }
+
+    #[test]
+    fn viewer_keeps_counterfactual_values_when_only_own_reach_is_zero() {
+        let mut g = game();
+        crate::solve(&mut g, 60, 0.0, false);
+        for path in [vec![], vec![0], vec![0,0]] {
+            g.apply_history(&path); g.cache_normalized_weights();
+            for p in 0..2 {
+                let opponents = g.compatible_opponent_weights_for_analysis(p);
+                let Some(h) = opponents.iter().position(|&w| w>0.0) else { continue; };
+                let mut before = g.expected_values_for_viewer(p);
+                if before.len()!=opponents.len() {
+                    before=g.recompute_current_node_expected_values_for_viewer(p,false,60);
+                }
+                let eq = g.equity_for_viewer(p);
+                let previous_weight = g.weights[p][h];
+                g.weights[p][h]=0.0;g.is_normalized_weight_cached=false;g.cache_normalized_weights();
+                assert_eq!(g.compatible_weights_for_analysis(p)[h],0.0);
+                assert_eq!(g.compatible_opponent_weights_for_analysis(p)[h],opponents[h]);
+                let mut after = g.expected_values_for_viewer(p);
+                if after.len()!=opponents.len() {
+                    after=g.recompute_current_node_expected_values_for_viewer(p,false,60);
+                }
+                assert!((before[h]-after[h]).abs()<0.0001,"conditional EV changed at zero own reach");
+                assert!((eq[h]-g.equity_for_viewer(p)[h]).abs()<0.00001);
+                g.weights[p][h]=previous_weight;g.is_normalized_weight_cached=false;g.cache_normalized_weights();
+            }
+        }
+        g.back_to_root();g.weights[1].fill(0.0);g.cache_normalized_weights();
+        assert!(g.expected_values_for_viewer(0).iter().all(|v|v.is_nan()));
+        assert!(g.equity_for_viewer(0).iter().all(|v|v.is_nan()));
+    }
+
+    #[test]
+    fn analysis_has_both_players_at_root_checks_bets_and_terminals() {
+        let mut g = game();
+        crate::solve(&mut g, 60, 0.0, false);
+        fn collect(node: &PostFlopNode, path: Vec<usize>, out: &mut Vec<Vec<usize>>) {
+            out.push(path.clone());
+            for a in 0..node.num_actions() {
+                let mut child = path.clone(); child.push(a);
+                collect(&node.play(a), child, out);
+            }
+        }
+        let mut paths = Vec::new(); collect(&g.root(), vec![], &mut paths);
+        assert!(paths.iter().any(|p| p.is_empty()) && paths.iter().any(|p| p.len() > 1));
+        for path in paths {
+            g.apply_history(&path); g.cache_normalized_weights();
+            for p in 0..2 {
+                let mass = g.compatible_weights_for_analysis(p);
+                let mut values = g.expected_values_for_analysis(p);
+                if values.len() != mass.len() { values = g.recompute_current_node_expected_values_for_analysis(p, false, 60); }
+                let eq = g.equity_for_analysis(p);
+                for (h, &w) in mass.iter().enumerate() {
+                    if w > 0. { assert!(values[h].is_finite()); assert!((0.0..=1.0).contains(&eq[h])); }
+                }
+            }
+        }
+    }
+}
+
 impl PostFlopGame {
     /// Moves the current node back to the root node.
     #[inline]
@@ -600,6 +735,86 @@ impl PostFlopGame {
     ///
     /// [`cache_normalized_weights`]: #method.cache_normalized_weights
     pub fn equity(&self, player: usize) -> Vec<f32> {
+        self.equity_impl(player, false, false)
+    }
+
+    /// Analysis-only equity normalization without FP32 ratio overflow.
+    pub fn equity_for_analysis(&self, player: usize) -> Vec<f32> {
+        self.equity_impl(player, true, false)
+    }
+
+    /// Read-only compatible matchup masses for exports. Small residuals from
+    /// total-minus-blockers cancellation are recomputed by positive summation.
+    /// This does not change CFR reaches, update buffers or normal display APIs.
+    pub fn compatible_weights_for_analysis(&self, player: usize) -> Vec<f64> {
+        assert!(player < 2 && self.is_normalized_weight_cached);
+        if self.bunching_num_dead_cards != 0 {
+            return self.normalized_weights[player].iter().map(|&w| w as f64).collect();
+        }
+        let board_mask = self.current_board().iter().fold(0u64, |m, &c| m | (1u64 << c));
+        let mut total = 0.0f64;
+        let mut blocked = [0.0f64; 52];
+        for (&(a, b), &weight) in self.private_cards[player ^ 1].iter().zip(&self.weights[player ^ 1]) {
+            if board_mask & ((1u64 << a) | (1u64 << b)) == 0 {
+                let w = weight as f64;
+                total += w; blocked[a as usize] += w; blocked[b as usize] += w;
+            }
+        }
+        self.private_cards[player].iter().enumerate().map(|(i, &(a, b))| {
+            let own = self.weights[player][i] as f64;
+            let mask = (1u64 << a) | (1u64 << b);
+            if own <= 0.0 || board_mask & mask != 0 { return 0.0; }
+            let same = self.same_hand_index[player][i];
+            let same_weight = if same == u16::MAX { 0.0 } else { self.weights[player ^ 1][same as usize] as f64 };
+            let mut compatible = total + same_weight - blocked[a as usize] - blocked[b as usize];
+            if compatible <= total * 1e-10 {
+                compatible = self.private_cards[player ^ 1].iter().zip(&self.weights[player ^ 1])
+                    .filter(|((c, d), _)| (board_mask | mask) & ((1u64 << c) | (1u64 << d)) == 0)
+                    .map(|(_, &w)| w as f64).sum();
+            }
+            own * compatible
+        }).collect()
+    }
+
+    /// Opponent mass compatible with each hand, independent of its own reach.
+    /// Used only by suit-level viewer exports, including legal zero-reach hands.
+    pub fn compatible_opponent_weights_for_analysis(&self, player: usize) -> Vec<f64> {
+        assert!(player < 2 && self.is_normalized_weight_cached);
+        assert_eq!(self.bunching_num_dead_cards, 0, "counterfactual viewer analysis does not support bunching");
+        let board_mask = self.current_board().iter().fold(0u64, |m, &c| m | (1u64 << c));
+        let mut total = 0.0f64;
+        let mut blocked = [0.0f64; 52];
+        for (&(a, b), &weight) in self.private_cards[player ^ 1].iter().zip(&self.weights[player ^ 1]) {
+            if board_mask & ((1u64 << a) | (1u64 << b)) == 0 {
+                let w = weight as f64;
+                total += w; blocked[a as usize] += w; blocked[b as usize] += w;
+            }
+        }
+        self.private_cards[player].iter().enumerate().map(|(i, &(a, b))| {
+            let mask = (1u64 << a) | (1u64 << b);
+            if board_mask & mask != 0 { return 0.0; }
+            let same = self.same_hand_index[player][i];
+            let same_weight = if same == u16::MAX { 0.0 } else { self.weights[player ^ 1][same as usize] as f64 };
+            let mut compatible = total + same_weight - blocked[a as usize] - blocked[b as usize];
+            if compatible <= total * 1e-10 {
+                compatible = self.private_cards[player ^ 1].iter().zip(&self.weights[player ^ 1])
+                    .filter(|((c, d), _)| (board_mask | mask) & ((1u64 << c) | (1u64 << d)) == 0)
+                    .map(|(_, &w)| w as f64).sum();
+            }
+            compatible
+        }).collect()
+    }
+
+    /// Showdown EQ also for zero-own-reach hands with compatible opponents.
+    pub fn equity_for_viewer(&self, player: usize) -> Vec<f32> {
+        self.equity_impl(player, true, true)
+    }
+
+    fn equity_impl(&self, player: usize, stable_analysis: bool, counterfactual: bool) -> Vec<f32> {
+        assert!(
+            !self.partial_card_tables_experiment || self.river != NOT_DEALT,
+            "Full-runout equity unavailable with pruned card tables; materialize analysis tables first"
+        );
         if self.state <= State::Uninitialized {
             panic!("Game is not successfully initialized");
         }
@@ -627,25 +842,172 @@ impl PostFlopGame {
                     }
                 }
             }
-            tmp.into_iter().map(|v| v as f32).collect()
+            tmp
         } else {
             let mut tmp = self.equity_internal_bunching(player);
             self.apply_swap(&mut tmp, player, false);
-            tmp
+            tmp.into_iter().map(f64::from).collect()
         };
 
+        let opponent_total: f64 = if stable_analysis {
+            self.weights[player ^ 1].iter().map(|&w| w as f64).sum()
+        } else { 0.0 };
+        let analysis_weights = stable_analysis.then(|| self.compatible_weights_for_analysis(player));
+        let opponents = counterfactual.then(|| self.compatible_opponent_weights_for_analysis(player));
         tmp.iter()
             .zip(self.weights[player].iter())
             .zip(self.normalized_weights[player].iter())
-            .map(|((&v, &w_raw), &w_normalized)| {
-                if w_normalized > 0.0 {
-                    v * (w_raw / w_normalized) + 0.5
+            .enumerate()
+            .map(|(hand, ((&v, &w_raw), &w_normalized))| {
+                let mass = analysis_weights.as_ref().map_or(w_normalized as f64, |w| w[hand]);
+                if mass > 0.0 {
+                    if stable_analysis {
+                        let equity = v * w_raw as f64 / mass + 0.5;
+                        if self.bunching_num_dead_cards == 0
+                            && (!(0.0..=1.0).contains(&equity)
+                                || (w_raw > 0.0 && mass / w_raw as f64 <= opponent_total * 1e-6))
+                        {
+                            // Very narrow/blocker-heavy reaches can lose their
+                            // compatible mass in centered subtraction. Recover
+                            // win/tie mass directly; never clamp an invalid EQ.
+                            self.direct_equity_for_analysis(player, hand)
+                        } else {
+                            equity as f32
+                        }
+                    } else {
+                        (v as f32) * (w_raw / w_normalized) + 0.5
+                    }
+                } else if let Some(opponents) = &opponents {
+                    let compatible = opponents[hand];
+                    if compatible <= 0.0 { f32::NAN } else {
+                        let equity = v / compatible + 0.5;
+                        if !(0.0..=1.0).contains(&equity) || compatible <= opponent_total * 1e-6 {
+                            self.direct_equity_for_analysis(player, hand)
+                        } else { equity as f32 }
+                    }
                 } else {
                     0.0
                 }
             })
             .collect()
     }
+
+    /// Positive-only reference normalization for cancellation-sensitive display EQ.
+    /// No solver buffers, ranges, strategies or traversal are modified.
+    fn direct_equity_for_analysis(&self, player: usize, hand: usize) -> f32 {
+        let (a, b) = self.private_cards[player][hand];
+        let mask = (1u64 << a) | (1u64 << b);
+        let mut wins = 0.0f64;
+        let mut total = 0.0f64;
+        let mut runout = |turn, river| {
+            let strengths = &self.hand_strength[card_pair_to_index(turn, river)];
+            let own_strengths = &strengths[player];
+            if own_strengths.len() < 2 { return; }
+            let Some(own) = own_strengths[1..own_strengths.len()-1].iter().find(|x| x.index as usize == hand) else { return; };
+            let opponents = &strengths[player ^ 1];
+            if opponents.len() < 2 { return; }
+            for item in &opponents[1..opponents.len()-1] {
+                let i = item.index as usize;
+                let (c, d) = self.private_cards[player ^ 1][i];
+                if mask & ((1u64 << c) | (1u64 << d)) != 0 { continue; }
+                let weight = self.weights[player ^ 1][i] as f64;
+                total += weight;
+                if own.strength > item.strength { wins += weight; }
+                else if own.strength == item.strength { wins += 0.5 * weight; }
+            }
+        };
+        if self.river != NOT_DEALT { runout(self.turn, self.river); }
+        else if self.turn != NOT_DEALT {
+            for river in 0..52 { if river != self.turn { runout(self.turn, river); } }
+        } else {
+            for turn in 0..52 { for river in turn+1..52 { runout(turn, river); } }
+        }
+        if total > 0.0 { (wins / total) as f32 } else { f32::NAN }
+    }
+
+    /// Native centered action CFVs of the averaged policy, in physical hand order.
+    /// Retains opponent reach/chance factors; requires an uncompressed solved decision.
+    pub fn exported_action_cfvs(&self) -> Vec<f32> {
+        assert!(self.state==State::Solved&&!self.is_compression_enabled);
+        assert!(!self.is_terminal_node()&&!self.is_chance_node());
+        let p=self.current_player();let n=self.num_private_hands(p);
+        let mut values=self.node().cfvalues().to_vec();
+        for row in values.chunks_exact_mut(n){self.apply_swap(row,p,false);}
+        values
+    }
+
+    /// Analysis-only native centered CFVs re-evaluated against the frozen policy.
+    /// Opponent reaches are retained; ancestor chance factors are omitted equally
+    /// for every vector in a frontier record. No normalization by own reach.
+    pub fn recompute_native_node_cfvs_for_analysis(&self, player: usize) -> Vec<f32> {
+        self.recompute_native_node_cfvs_analysis_impl(player, false, 0)
+    }
+
+    /// Read-only diagnostic replay with neural continuation aggregation enabled.
+    /// Same native units and frozen averaged policy as the exact analysis method.
+    pub fn recompute_native_node_cfvs_with_neural_frontiers_for_analysis(&self, player: usize, iteration: u32) -> Vec<f32> {
+        self.recompute_native_node_cfvs_analysis_impl(player, true, iteration)
+    }
+
+    fn recompute_native_node_cfvs_analysis_impl(&self, player: usize, neural_frontiers: bool, iteration: u32) -> Vec<f32> {
+        assert!(player<2 && self.state==State::Solved);
+        let n=self.num_private_hands(player);let mut raw=Vec::<f32>::with_capacity(n);
+        let mut node=self.node();
+        let mut opponent=self.weights[player^1].clone();let mut own=self.weights[player].clone();
+        self.apply_swap(&mut opponent,player^1,true);self.apply_swap(&mut own,player,true);
+        compute_cfvalue_for_display_recursive(&mut raw.spare_capacity_mut()[..n],self,&mut node,player,
+            &opponent,false,Some(&own),neural_frontiers,iteration);
+        unsafe{raw.set_len(n)};self.apply_swap(&mut raw,player,false);raw
+    }
+
+    /// Analysis-only fallback for a chance-node player without a stored display cache.
+    /// Re-evaluate the averaged policy at the current ranges, never changing strategy.
+    pub fn recompute_current_node_expected_values_for_analysis(&self, player: usize, neural_frontiers: bool, iteration: u32) -> Vec<f32> {
+        self.recompute_viewer_values_impl(player, neural_frontiers, iteration, false)
+    }
+
+    pub fn recompute_current_node_expected_values_for_viewer(&self, player: usize, neural_frontiers: bool, iteration: u32) -> Vec<f32> {
+        self.recompute_viewer_values_impl(player, neural_frontiers, iteration, true)
+    }
+
+    fn recompute_viewer_values_impl(&self, player: usize, neural_frontiers: bool, iteration: u32, counterfactual: bool) -> Vec<f32> {
+        assert!(player<2 && self.state==State::Solved && self.is_normalized_weight_cached);
+        self.recompute_viewer_values_ready_impl(player, neural_frontiers, iteration, counterfactual)
+    }
+
+    /// Read-only root evaluation of the live averaged policy for iteration curves.
+    /// Does not finalize or overwrite regret/average-strategy storage. Neural
+    /// frontiers and exact all-ins use the same evaluator as final display.
+    pub fn diagnostic_live_root_expected_values(&self, player: usize, iteration: u32) -> Vec<f32> {
+        assert!(player<2 && self.is_ready() && self.is_normalized_weight_cached);
+        assert_eq!(self.node_id(), 0, "live root diagnostic requires the root");
+        self.recompute_viewer_values_ready_impl(player, true, iteration, false)
+    }
+
+    fn recompute_viewer_values_ready_impl(&self, player: usize, neural_frontiers: bool, iteration: u32, counterfactual: bool) -> Vec<f32> {
+        let n=self.num_private_hands(player);let mut raw=Vec::<f32>::with_capacity(n);
+        let mut node=self.node();
+        let mut opponent=self.weights[player^1].clone();let mut own=self.weights[player].clone();
+        self.apply_swap(&mut opponent,player^1,true);self.apply_swap(&mut own,player,true);
+        compute_cfvalue_for_display_recursive(&mut raw.spare_capacity_mut()[..n],self,&mut node,player,
+            &opponent,false,Some(&own),neural_frontiers,iteration);
+        unsafe{raw.set_len(n)};
+        self.apply_swap(&mut raw,player,false);
+        let bets=self.total_bet_amount();let offset=self.tree_config.starting_pot as f64*0.5
+            +(node.amount+(bets[player]-bets[player^1]).max(0)) as f64;
+        let combinations=if self.bunching_num_dead_cards==0{self.num_combinations}else{self.bunching_num_combinations};
+        let analysis_weights = self.compatible_weights_for_analysis(player);
+        let opponents = counterfactual.then(|| self.compatible_opponent_weights_for_analysis(player));
+        for (i,v) in raw.iter_mut().enumerate(){
+            let mass=analysis_weights[i];
+            *v=if mass>0. {((*v as f64)*combinations*self.weights[player][i] as f64/mass+offset) as f32}
+            else if let Some(opponents) = &opponents {
+                if opponents[i]>0. {((*v as f64)*combinations/opponents[i]+offset) as f32}else{f32::NAN}
+            }else{0.};
+        }
+        raw
+    }
+
 
     /// Returns the expected values of each private hand of the given player.
     ///
@@ -659,6 +1021,21 @@ impl PostFlopGame {
     /// [`cache_normalized_weights`]: #method.cache_normalized_weights
     /// [`expected_values_detail`]: #method.expected_values_detail
     pub fn expected_values(&self, player: usize) -> Vec<f32> {
+        self.expected_values_impl(player, false, false)
+    }
+
+    /// Viewer analysis with FP64 reach normalization, avoiding intermediate
+    /// FP32 overflow on tiny, but nonzero, compatible reaches.
+    pub fn expected_values_for_analysis(&self, player: usize) -> Vec<f32> {
+        self.expected_values_impl(player, true, false)
+    }
+
+    /// Per-hand values conditional on a legal hand, even at zero own reach.
+    pub fn expected_values_for_viewer(&self, player: usize) -> Vec<f32> {
+        self.expected_values_impl(player, true, true)
+    }
+
+    fn expected_values_impl(&self, player: usize, stable_analysis: bool, counterfactual: bool) -> Vec<f32> {
         if self.state != State::Solved {
             panic!("Game is not solved");
         }
@@ -667,7 +1044,7 @@ impl PostFlopGame {
             panic!("Normalized weights are not cached");
         }
 
-        let expected_value_detail = self.expected_values_detail(player);
+        let expected_value_detail = self.expected_values_detail_impl(player, stable_analysis, counterfactual);
 
         if self.is_terminal_node() || self.is_chance_node() || self.current_player() != player {
             return expected_value_detail;
@@ -711,6 +1088,19 @@ impl PostFlopGame {
     /// [`expected_values`]: #method.expected_value
     /// [`cache_normalized_weights`]: #method.cache_normalized_weights
     pub fn expected_values_detail(&self, player: usize) -> Vec<f32> {
+        self.expected_values_detail_impl(player, false, false)
+    }
+
+    /// Per-action counterpart of `expected_values_for_analysis`.
+    pub fn expected_values_detail_for_analysis(&self, player: usize) -> Vec<f32> {
+        self.expected_values_detail_impl(player, true, false)
+    }
+
+    pub fn expected_values_detail_for_viewer(&self, player: usize) -> Vec<f32> {
+        self.expected_values_detail_impl(player, true, true)
+    }
+
+    fn expected_values_detail_impl(&self, player: usize, stable_analysis: bool, counterfactual: bool) -> Vec<f32> {
         if self.state != State::Solved {
             panic!("Game is not solved");
         }
@@ -778,6 +1168,8 @@ impl PostFlopGame {
         let starting_pot = self.tree_config.starting_pot;
         let total_bet_amount = self.total_bet_amount();
         let bias = (total_bet_amount[player] - total_bet_amount[player ^ 1]).max(0);
+        let analysis_weights = stable_analysis.then(|| self.compatible_weights_for_analysis(player));
+        let opponents = counterfactual.then(|| self.compatible_opponent_weights_for_analysis(player));
 
         ret.chunks_exact_mut(num_hands)
             .enumerate()
@@ -787,9 +1179,26 @@ impl PostFlopGame {
                 row.iter_mut()
                     .zip(self.weights[player].iter())
                     .zip(self.normalized_weights[player].iter())
-                    .for_each(|((v, &w_raw), &w_normalized)| {
-                        if is_fold || w_normalized == 0.0 {
+                    .enumerate()
+                    .for_each(|(hand, ((v, &w_raw), &w_normalized))| {
+                        let mass = analysis_weights.as_ref().map_or(w_normalized as f64, |w| w[hand]);
+                        if let Some(opponents) = &opponents {
+                            if mass == 0.0 {
+                                *v = if opponents[hand] <= 0.0 { f32::NAN }
+                                else if is_fold { 0.0 }
+                                else { ((*v as f64) * normalizer as f64 / opponents[hand]
+                                    + starting_pot as f64 * 0.5
+                                    + (self.node().amount + bias) as f64) as f32 };
+                                return;
+                            }
+                        }
+                        if is_fold || mass == 0.0 {
                             *v = 0.0;
+                        } else if stable_analysis {
+                            *v = ((*v as f64) * normalizer as f64 * w_raw as f64
+                                / mass
+                                + starting_pot as f64 * 0.5
+                                + (self.node().amount + bias) as f64) as f32;
                         } else {
                             *v *= normalizer * (w_raw / w_normalized);
                             *v += starting_pot as f32 * 0.5 + (self.node().amount + bias) as f32;
@@ -990,6 +1399,16 @@ impl PostFlopGame {
             });
             ret
         })
+    }
+
+    /// Returns the deterministic ID of the current tree node.
+    pub fn node_id(&self) -> u64 {
+        self.node().id()
+    }
+
+    /// Returns the number of nodes in the built tree.
+    pub fn node_count(&self) -> u64 {
+        self.node_arena.len() as u64
     }
 
     /// Returns the reference to the current node.

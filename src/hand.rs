@@ -51,7 +51,26 @@ impl Hand {
 
     #[inline]
     pub fn evaluate(&self) -> u16 {
-        HAND_TABLE.binary_search(&self.evaluate_internal()).unwrap() as u16
+        HAND_TABLE
+            .binary_search(&self.best_five_internal())
+            .unwrap() as u16
+    }
+
+    fn best_five_internal(&self) -> i32 {
+        if self.num_cards != 6 {
+            return self.evaluate_internal();
+        }
+        let mut best = i32::MIN;
+        for omitted in 0..6 {
+            let mut five = Hand::new();
+            for (index, &card) in self.cards[..6].iter().enumerate() {
+                if index != omitted {
+                    five = five.add_card(card);
+                }
+            }
+            best = best.max(five.evaluate_internal());
+        }
+        best
     }
 
     fn evaluate_internal(&self) -> i32 {
@@ -60,7 +79,7 @@ impl Hand {
         let mut rankset_of_count = [0i32; 5];
         let mut rank_count = [0i32; 13];
 
-        for &card in &self.cards {
+        for &card in &self.cards[..self.num_cards] {
             let rank = card / 4;
             let suit = card % 4;
             rankset |= 1 << rank;
@@ -123,6 +142,16 @@ impl Hand {
             // high card
             keep_n_msb(rankset, 5)
         }
+    }
+
+    #[inline]
+    pub(crate) fn category(&self) -> u8 {
+        (self.best_five_internal() >> 26) as u8
+    }
+
+    #[inline]
+    pub(crate) fn strength_key(&self) -> i32 {
+        self.best_five_internal()
     }
 }
 

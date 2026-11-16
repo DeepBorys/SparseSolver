@@ -69,10 +69,15 @@ mod hand;
 mod hand_table;
 mod interface;
 mod mutex_like;
+pub mod pio_order;
 mod range;
 mod sliceop;
 mod solver;
+#[cfg(feature = "neural")]
+mod sparse_nn;
 mod utility;
+mod best_response_capture;
+pub use best_response_capture::*;
 
 #[cfg(feature = "bincode")]
 pub use file::*;

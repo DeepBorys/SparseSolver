@@ -1,0 +1,18 @@
+name: AWS preview
+on: [push, pull_request]
+jobs:
+  package-and-build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/check_package.py
+      - run: python3 scripts/prepare_models.py
+      - run: python3 -m unittest discover -s tests -p "test_*.py" -v
+      - run: bash -n setup.sh scripts/run.sh run_quick_benchmark.sh run_staged_example.sh run_complete_policy.sh
+      - run: bash setup.sh
+      - run: |
+          export PATH="$PWD/.venv/bin:$HOME/.cargo/bin:$PATH"
+          export LIBTORCH_USE_PYTORCH=1
+          export LD_LIBRARY_PATH="$(.venv/bin/python -c 'import importlib.util; from pathlib import Path; print(Path(importlib.util.find_spec("torch").origin).parent/"lib")'):${LD_LIBRARY_PATH:-}"
+          cargo +1.88.0 test --locked --release --features neural --example qj2_3bet_sparse -- model_availability_tests
+      - run: bash run_quick_benchmark.sh --models 2x2 --threads 2 --repeats 1

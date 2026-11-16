@@ -78,6 +78,11 @@ pub enum BetSize {
 
     /// Bet size representing all-in.
     AllIn,
+
+    /// Raise-only extension: choose a pot-relative ratio using the pot at the
+    /// start of the current street, then size against the pot after calling.
+    /// Appended so the existing variants retain their serialized indices.
+    PotRelativeByStreetPot(i32, f64, f64),
 }
 
 impl TryFrom<(&str, &str)> for BetSizeOptions {

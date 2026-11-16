@@ -1,8 +1,22 @@
 mod base;
+mod auxiliary_turn;
+pub use base::{
+    set_basis13_river_tree, set_basis13_turn_tree, set_basis6_river_tree, set_basis6_turn_tree,
+    set_custom_river_basis_cards, set_custom_turn_basis_cards, set_exact_allin_matrix_f32_eval,
+    set_exact_allin_matrix_sparse_eval, set_exact_allin_matrix_tree, set_river_basis_count,
+    set_turn_basis_count, set_physical_chance_isomorphism,
+};
 mod evaluation;
 mod interpreter;
+mod frozen_river_selection;
 mod node;
-
+mod regret_transfer;
+mod check_check_river;
+mod shared_regret_transfer;
+pub use shared_regret_transfer::{K1SharedHandTable,K1SharedNodeCopy,K1SharedTransferPlan};
+pub use regret_transfer::{K1RegretNodeCopy,K1RegretTransferPlan};
+#[cfg(feature="neural")]
+pub use regret_transfer::NeuralPhaseBank;
 #[cfg(feature = "bincode")]
 mod serialization;
 
@@ -34,6 +48,12 @@ enum State {
 pub struct PostFlopGame {
     // state
     state: State,
+    // Opt-in pruned builder: omitted runout tables must not serve full-board equities.
+    partial_card_tables_experiment: bool,
+    // An exact continuation trained alongside, but excluded from, the neural turn sum.
+    auxiliary_exact_turn: Option<auxiliary_turn::AuxiliaryExactTurn>,
+    // Runtime-only metadata. Owns no pointers; cleared when geometry changes.
+    direct_terminal_plans: std::sync::Mutex<BTreeMap<u64, std::sync::Arc<crate::CompiledTerminalPlan>>>,
 
     // postflop game configurations
     card_config: CardConfig,
@@ -55,6 +75,16 @@ pub struct PostFlopGame {
 
     // hand strength information: indices are stored in ascending strength order
     hand_strength: Vec<[Vec<StrengthItem>; 2]>,
+
+    // Optional exact called-all-in payout matrices. Canonical caches use
+    // 1326x1326 hand order; these runtime matrices contain only local range
+    // rows and columns. Turn matrices are keyed by the dealt turn card.
+    flop_allin_payout_matrix: Option<FlopAllinPayoutMatrix>,
+    turn_allin_payout_matrices: BTreeMap<Card, FlopAllinPayoutMatrix>,
+    use_flop_allin_payout_matrix: bool,
+    // Opt-in exact showdown leaves at proved check/check-only river runouts.
+    // Runtime-only; the physical tree and serialized format stay unchanged.
+    check_check_river_nodes: std::collections::BTreeSet<u64>,
 
     // isomorphism information
     // - `isomorphism_ref_*`: indices to which the eliminated events should refer
@@ -99,6 +129,25 @@ pub struct PostFlopGame {
     storage_chance: Vec<u8>,
     locking_strategy: BTreeMap<usize, Vec<f32>>,
 
+    // Optional runtime diagnostic matrix, excluded from serialization.
+    turn_cfv_conversion: Option<crate::pio_order::TurnCfvConversion>,
+    secondary_turn_cfv_conversion: Option<crate::pio_order::TurnCfvConversion>,
+    secondary_turn_cfv_nodes: Vec<u64>,
+    tertiary_turn_cfv_conversion: Option<crate::pio_order::TurnCfvConversion>,
+    tertiary_turn_cfv_nodes: Vec<u64>,
+    river_cfv_conversions: BTreeMap<Card, crate::pio_order::TurnCfvConversion>,
+    secondary_river_cfv_conversions: BTreeMap<Card, crate::pio_order::TurnCfvConversion>,
+    secondary_river_cfv_nodes: Vec<u64>,
+    tertiary_river_cfv_conversions: BTreeMap<Card, crate::pio_order::TurnCfvConversion>,
+    tertiary_river_cfv_nodes: Vec<u64>,
+    #[cfg(feature = "neural")]
+    glued_river_modules: Option<[std::sync::Mutex<tch::CModule>; 2]>,
+
+    // Optional runtime capture scope, excluded from serialization.
+    capture_all_turn_nodes: bool,
+    capture_all_river_nodes: bool,
+    capture_river_turns: Vec<Card>,
+
     // result interpreter
     action_history: Vec<usize>,
     node_history: Vec<usize>,
@@ -114,12 +163,26 @@ pub struct PostFlopGame {
     cfvalues_cache: [Vec<f32>; 2],
 }
 
+struct FlopAllinPayoutMatrix {
+    // Directional, contiguous local-hand matrices. `values[player]` is laid
+    // out as local hero rows by local opponent columns. Keep payouts in f64
+    // so this exact path rounds only at the solver's normal f32 CFV boundary.
+    values: [Vec<f64>; 2],
+    // Optional opponent-major layout used by the experimental sparse evaluator.
+    values_transposed: [Vec<f64>; 2],
+    // Optional all-f32 row-major and opponent-major experimental layouts.
+    values_f32: [Vec<f32>; 2],
+    values_transposed_f32: [Vec<f32>; 2],
+    local_hands: [usize; 2],
+}
+
 /// A struct representing a node in a postflop game tree.
 ///
 /// The nodes must be stored as `Vec<MutexLike<PostFlopNode>>`.
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct PostFlopNode {
+    id: u64,
     prev_action: Action,
     player: u8,
     turn: Card,

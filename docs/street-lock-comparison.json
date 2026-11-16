@@ -1,0 +1,162 @@
+{
+  "units": "percent starting pot180; locked losses mean seats relative to finite-reference BR baseline; full exploitability measured directly",
+  "sparse": "Unsafe300:2x2/100\u21926x6/100;fastunsafe100:1x1/50\u21922x2/25;fixedseedflop,allturnfrontiers/allrivers.",
+  "rows": {
+    "one_size": [
+      {
+        "method": "Classical \u22645%",
+        "iterations": 27,
+        "full_exploitability": 4.7755781809488935,
+        "flop_locked": 0.5201018208333331,
+        "flop_turn_locked": 1.9351073763888889,
+        "source": "benchmarks/QJ2_normal_first5pct_street_locks_20261114_v1/RESULTS.json",
+        "time_ms": 3013.4565780000003,
+        "timing_scope": "Clean median, full tree",
+        "timing_source": "benchmarks/QJ2_clean_classical_sparse_betcall_timing_20261114_v1/RESULTS.json"
+      },
+      {
+        "method": "Classical \u22642%",
+        "iterations": 38,
+        "full_exploitability": 1.9056126806471083,
+        "flop_locked": 0.16981709861111385,
+        "flop_turn_locked": 0.7294123763888926,
+        "source": "benchmarks/QJ2_normal_street_lock_thresholds_20261114_v1/target_2/RESULTS.json",
+        "time_ms": 4195.796746000001,
+        "timing_scope": "Clean median, full tree",
+        "timing_source": "benchmarks/QJ2_clean_classical_sparse_betcall_timing_20261114_v1/RESULTS.json"
+      },
+      {
+        "method": "Classical \u22641%",
+        "iterations": 50,
+        "full_exploitability": 0.9654919306437174,
+        "flop_locked": 0.06984182083333303,
+        "flop_turn_locked": 0.3145812652777814,
+        "source": "benchmarks/QJ2_normal_street_lock_thresholds_20261114_v1/target_1/RESULTS.json",
+        "time_ms": 5481.254172000004,
+        "timing_scope": "Clean median, full tree",
+        "timing_source": "benchmarks/QJ2_clean_classical_sparse_betcall_timing_20261114_v1/RESULTS.json"
+      },
+      {
+        "method": "Sparse + unsafe300",
+        "iterations": "100 + 100; +300 per frontier",
+        "full_exploitability": 0.8103842205471463,
+        "flop_locked": 0.07071154305555814,
+        "flop_turn_locked": 0.19264070972222194,
+        "source": "benchmarks/QJ2_normal_staged100_100_unsafe300_streetlocks_20261114_v1/RESULTS.json",
+        "time_ms": 461.93444700000003,
+        "timing_scope": "Clean median, seed + one refinement; transfer excluded",
+        "timing_source": "benchmarks/QJ2_normal_staged100_100_unsafe300_streetlocks_20261114_v1/TIMING.json",
+        "total_core_with_transfer_ms": 512.6148250000001,
+        "transfer_ms": 49.977298000000005
+      },
+      {
+        "method": "Classical \u22640.5%",
+        "iterations": 74,
+        "full_exploitability": 0.4995070563422309,
+        "flop_locked": 0.01564904305555596,
+        "flop_turn_locked": 0.1114698763888929,
+        "source": "benchmarks/QJ2_normal_street_lock_thresholds_20261114_v1/target_0.5/RESULTS.json",
+        "time_ms": 8054.2006440000005,
+        "timing_scope": "Clean median, full tree",
+        "timing_source": "benchmarks/QJ2_clean_classical_sparse_betcall_timing_20261114_v1/RESULTS.json"
+      },
+      {
+        "method": "Classical \u22640.25%",
+        "iterations": 97,
+        "full_exploitability": 0.2493413289388021,
+        "flop_locked": 0.0070434875000005255,
+        "flop_turn_locked": 0.048111543055557135,
+        "source": "benchmarks/QJ2_normal_street_lock_thresholds_20261114_v1/target_0.25/RESULTS.json",
+        "time_ms": 10538.737138999997,
+        "timing_scope": "Clean median, full tree",
+        "timing_source": "benchmarks/QJ2_clean_classical_sparse_betcall_timing_20261114_v1/RESULTS.json"
+      }
+    ],
+    "two_size": [
+      {
+        "method": "Classical \u22645%",
+        "iterations": 36,
+        "full_exploitability": 4.796782599555121,
+        "flop_locked": 0.542078888888891,
+        "flop_turn_locked": 1.8237733333333337,
+        "source": "benchmarks/QJ2_twosize_classical_street_thresholds_20261114_v1/target_5/RESULTS.json",
+        "time_ms": 12114.287576000004,
+        "timing_scope": "CFR only; checks interleaved",
+        "timing_source": "benchmarks/QJ2_twosize_classical_street_thresholds_20261114_v1/target_5/seed/SOURCE_TIMING.json"
+      },
+      {
+        "method": "Classical \u22642%",
+        "iterations": 56,
+        "full_exploitability": 1.9623904758029513,
+        "flop_locked": 0.2870708333333343,
+        "flop_turn_locked": 0.7456233333333353,
+        "source": "benchmarks/QJ2_twosize_classical_street_thresholds_20261114_v1/target_2/RESULTS.json",
+        "time_ms": 22138.045871000002,
+        "timing_scope": "CFR only; checks interleaved",
+        "timing_source": "benchmarks/QJ2_twosize_classical_street_thresholds_20261114_v1/target_2/seed/SOURCE_TIMING.json"
+      },
+      {
+        "method": "Sparse 1x1\u21922x2 + unsafe100",
+        "iterations": "50 + 25; +100 per frontier",
+        "full_exploitability": 1.5683052274915907,
+        "flop_locked": 0.2396152777777753,
+        "flop_turn_locked": 0.5133930555555545,
+        "time_ms": 109.2098773116882,
+        "timing_scope": "Sum of separate cleanseedmedian and observedmeanrefinement,not jointlytimedcleanlatency;extra2\u2192fulltransfer excluded;qualityfromall539frontiers",
+        "source": "benchmarks/QJ2_1x50_2x25_unsafe100_street_locks_20261115_v1/RESULTS.json",
+        "timing_sources": [
+          "benchmarks/QJ2_twosize_100_one_transfer_20261115_v1/1x1_i50_to_2x2_i25/VALIDATED.json",
+          "benchmarks/QJ2_1x50_2x25_unsafe100_200_300_20261115_v1/RESULTS.json"
+        ],
+        "reference_residual_pct_pot": 0.009762181176079644
+      },
+      {
+        "method": "Classical \u22641%",
+        "iterations": 89,
+        "full_exploitability": 0.9896145926581489,
+        "flop_locked": 0.10452194444444353,
+        "flop_turn_locked": 0.27721222222222114,
+        "source": "benchmarks/QJ2_twosize_classical_street_thresholds_20261114_v1/target_1/RESULTS.json",
+        "time_ms": 29755.208908,
+        "timing_scope": "CFR only; checks interleaved",
+        "timing_source": "benchmarks/QJ2_twosize_classical_street_thresholds_20261114_v1/target_1/seed/SOURCE_TIMING.json"
+      },
+      {
+        "method": "Sparse + unsafe300",
+        "iterations": "100 + 100; +300 per frontier",
+        "full_exploitability": 0.7330396440294054,
+        "flop_locked": 0.0802127777777765,
+        "flop_turn_locked": 0.17751111111111345,
+        "source": "benchmarks/QJ2_refined100_100_unsafe300_streetlocks_20261114_v1/RESULTS.json",
+        "time_ms": 1162.4862170000001,
+        "timing_scope": "Clean median, seed + one refinement; transfer excluded",
+        "timing_source": "benchmarks/QJ2_sparse_clean16_after_quality_20261114_v1/RESULTS.json",
+        "total_core_with_transfer_ms": 1319.127885,
+        "transfer_ms": 156.641668
+      },
+      {
+        "method": "Classical \u22640.5%",
+        "iterations": 160,
+        "full_exploitability": 0.4930986298455132,
+        "flop_locked": 0.05274000000000001,
+        "flop_turn_locked": 0.16601222222222292,
+        "source": "benchmarks/QJ2_twosize_classical_street_thresholds_20261114_v1/target_0.5/RESULTS.json",
+        "time_ms": 53566.083590999966,
+        "timing_scope": "CFR only; checks interleaved",
+        "timing_source": "benchmarks/QJ2_twosize_classical_street_thresholds_20261114_v1/target_0.5/seed/SOURCE_TIMING.json"
+      },
+      {
+        "method": "Classical \u22640.25%",
+        "iterations": 216,
+        "full_exploitability": 0.2493572235107422,
+        "flop_locked": 0.03236388888889034,
+        "flop_turn_locked": 0.07527888888889026,
+        "source": "benchmarks/QJ2_twosize_classical_street_thresholds_20261114_v1/target_0.25/RESULTS.json",
+        "time_ms": 72003.91565299999,
+        "timing_scope": "CFR only; checks interleaved",
+        "timing_source": "benchmarks/QJ2_twosize_classical_street_thresholds_20261114_v1/target_0.25/seed/SOURCE_TIMING.json"
+      }
+    ]
+  },
+  "finite_reference_note": "Different archived series use different finite reference profiles;one-size reference residual .000998179%,two-size classical .004687839%,two-size sparse .009762181%. Locked loss subtracts each series matched reference BR payout baseline."
+}

@@ -111,6 +111,9 @@ thread_local! {
 
 impl Encode for PostFlopGame {
     fn encode<E: Encoder>(&self, encoder: &mut E) -> Result<(), EncodeError> {
+        if self.auxiliary_exact_turn.is_some() {
+            return Err(EncodeError::Other("Auxiliary exact-turn games require strategy export; legacy game serialization does not preserve auxiliary semantics"));
+        }
         if self.state <= State::Uninitialized {
             return Err(EncodeError::Other("Game is not successfully initialized"));
         }
@@ -248,7 +251,11 @@ impl Decode for PostFlopGame {
         // restore the counterfactual values
         if game.storage_mode == BoardState::River && game.state == State::Solved {
             game.state = State::MemoryAllocated;
-            finalize(&mut game);
+            // Explicit diagnostic loader: restore external exact all-in matrices
+            // before recomputing CFVs on a serialized matrix-terminal tree.
+            if std::env::var_os("PFS_DEFER_LOADED_FINALIZATION_EXPERIMENT").is_none() {
+                finalize(&mut game);
+            }
         }
 
         Ok(game)
