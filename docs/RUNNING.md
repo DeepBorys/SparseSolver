@@ -1,6 +1,6 @@
 # Command-line reference
 
-[Back to the overview](../README.md) · [Website](http://localhost:8022/SparseSolver/)
+[Back to the overview](../README.md) · [Website](https://deepborys.com/SparseSolver/)
 
 All runnable examples and benchmark scripts now default to the available CPU
 count. Omit `--threads` on either a four-CPU or sixteen-CPU instance; explicit
@@ -235,13 +235,12 @@ See [the example guide](../examples/README.md) for schedules and timing scope.
 
 ## Scope and license
 
-This is an AWS testing preview, not a new public repository or a website
-publication. Browser solution links and the 25-second presentation remain on
-the author’s personal website; the video workflow implementation is excluded.
+This repository provides CPU inference, classical solving and benchmark examples.
+The website hosts saved-solution viewers and the recorded presentation.
+The internal live-viewer implementation is excluded.
 
-This branch tip is trimmed. The existing repository’s older history is not
-rewritten. A future clean public repository should import this snapshot without
-bringing the development/training history along.
+Wataru’s upstream history is preserved. The private development and training
+history was not imported.
 
 Original solver © Wataru Inariba; SparseSolver additions © Jerzy Slaby.
 AGPL-3.0-or-later; retain `LICENSE` and `NOTICE`.

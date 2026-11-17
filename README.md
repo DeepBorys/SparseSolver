@@ -8,7 +8,7 @@ Measured on AWS C8a.4xlarge: median native solve-loop time, excluding setup and
 exports. The error is mean OOP/IP **flop-locked best-response loss**, distinct
 from complete-policy exploitability. [Measurements](docs/benchmark.json).
 
-[![QJ2: classical reference on the left, SparseSolver on the right](docs/solution-viewer.png)](http://localhost:8022/SparseSolver/)
+[![QJ2: classical reference on the left, SparseSolver on the right](docs/solution-viewer.png)](https://deepborys.com/SparseSolver/)
 
 *After check → bet: compare the fold / call / raise response in the 13×13 matrices.*
 
@@ -56,10 +56,9 @@ both seats, as percentages of starting pot, within the configured betting tree.
 Finite reference/response tolerances limit comparisons of small differences.
 [Table data](docs/street-lock-comparison.json).
 
-Explore the [website](http://localhost:8022/SparseSolver/) and
-[technical appendix](http://localhost:8022/SparseSolver/technical-appendix.html)
+Explore the [website](https://deepborys.com/SparseSolver/) and
+[technical appendix](https://deepborys.com/SparseSolver/technical-appendix.html)
 for the approach, browser solutions and full evaluation methodology.
-*These links point to the local preview for now.*
 
 ## Run it yourself
 
@@ -148,5 +147,5 @@ later (AGPL-3.0-or-later)**. This software is provided without any warranty,
 including the implied warranties of merchantability or fitness for a particular
 purpose. See the [full license](LICENSE) and [attribution notice](NOTICE).
 
-The future public repository will start from a reviewed snapshot, without the
-development repository’s history.
+Wataru’s upstream history is preserved. SparseSolver was added from a reviewed
+snapshot without the private development history.
